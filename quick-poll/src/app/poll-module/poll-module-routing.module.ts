@@ -20,8 +20,12 @@ const routes: Routes = [
 		component: PollResultsComponent
 	},
 	{
-		path: 'attempt',
+		path: 'attempt/:id',
 		component: AttemptPollComponent
+	},
+	{
+		path: '**',
+		redirectTo: '/new'
 	},
 ];
 

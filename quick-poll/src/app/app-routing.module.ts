@@ -6,6 +6,10 @@ const routes: Routes = [
 		path: '',
 		loadChildren: () => import('./poll-module/poll-module.module').then(m => m.PollModuleModule)
 	},
+	{
+		path: '**',
+		redirectTo: '/new'
+	},
 ];
 
 @NgModule({

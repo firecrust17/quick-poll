@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'quick-poll';
-  constructor(private router: Router) {
-  	this.router.navigate(['./new']);
+  constructor() {
   }
 }
