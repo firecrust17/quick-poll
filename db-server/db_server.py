@@ -5,7 +5,7 @@ import cherrypy
 if __name__ == "__main__":
 
     host = config_json['config']['db_server']['host']
-    port = int(config_json['config']['db_server']['host'])
+    port = int(config_json['config']['db_server']['port'])
 
     cherrypy_config = {
         'server.socket_host': host,
