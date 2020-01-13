@@ -1,0 +1,16 @@
+<config>
+    
+    <db_connection>
+        <username>postgres</username>
+		<pwd>test</pwd>
+		<host>localhost</host>
+		<dbname>poll-db</dbname>
+		<schema>current</schema>
+    </db_connection>
+    
+    <db_server>
+    	<host>0.0.0.0</host>
+    	<port>8000</port>
+    </db_server>
+
+</config>
