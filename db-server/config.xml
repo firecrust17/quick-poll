@@ -4,8 +4,8 @@
         <username>postgres</username>
 		<pwd>test</pwd>
 		<host>localhost</host>
-		<dbname>poll-db</dbname>
-		<schema>current</schema>
+		<dbname>poll_db_2</dbname>
+		<schema>public</schema>
     </db_connection>
     
     <db_server>
