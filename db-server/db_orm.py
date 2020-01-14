@@ -24,7 +24,7 @@ class PollData(Base):
     __table_args__ = {'extend_existing': 'True'}
 
     id = Column(Integer, primary_key=True)
-    created_on = Column(DateTime, default=func.now())
+    # created_on = Column(DateTime, default=func.now())
 
 class User(Base):
     __tablename__ = 'user'

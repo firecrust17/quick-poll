@@ -61,13 +61,14 @@ class NewPoll(restful.Resource):
             timer = data['timer'],
             show_result_on = data['show_result_on'],
             is_anonymous = data['is_anonymous'],
+            created_on = datetime.datetime.now(),
             owner = data['owner'])
         # print (orm_rec)
 
 		session.add(orm_rec)
 		session.commit()
 		# print(orm_list(orm_rec))
-		return {'success': True, 'message': 'New poll created', 'data': orm_list(orm_rec)}
+		return {'success': True, 'message': 'New poll created', 'data': orm_dict(orm_rec)}
 
 
 class GetPollData(restful.Resource):
