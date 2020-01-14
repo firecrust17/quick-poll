@@ -75,9 +75,9 @@ class GetPollData(restful.Resource):
 		data = request.get_json()
 
 		# .all() returns list && .one() returns dict
-		orm_rec = session.query(PollData).filter(PollData.id == data['id']).all()
+		orm_rec = session.query(PollData).filter(PollData.id == data['id']).one()
 		
-		return {'success': True, 'data': orm_list(orm_rec), 'count': len(orm_rec)}
+		return {'success': True, 'data': orm_dict(orm_rec)}
 
 
 class GetUserPolls(restful.Resource):

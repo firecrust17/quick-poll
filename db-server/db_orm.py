@@ -48,15 +48,18 @@ session = Session()
 
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
-def orm_list(orm_data):
+def orm_list(orm_list):
     new_list = []
-    for rec in orm_data:
-        new_rec = {}
-        for col in rec.__table__.columns:
-            orm_val = getattr(rec, col.name)
-            if type(orm_val) in [datetime.datetime, datetime.date, datetime.time]:
-                new_rec[col.name] = str(orm_val)
-            else :
-                new_rec[col.name] = orm_val
-        new_list.append(new_rec)
+    for rec in orm_list:
+        new_list.append(orm_dict(rec))
     return new_list
+
+def orm_dict(orm_dict):
+    new_rec = {}
+    for col in orm_dict.__table__.columns:
+        orm_val = getattr(orm_dict, col.name)
+        if type(orm_val) in [datetime.datetime, datetime.date, datetime.time]:
+            new_rec[col.name] = str(orm_val)
+        else :
+            new_rec[col.name] = orm_val
+    return new_rec
