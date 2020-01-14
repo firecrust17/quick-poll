@@ -3,6 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import DateTime, func
+
 
 from get_config import *
 import json
@@ -18,13 +20,14 @@ meta = MetaData(bind=engine, schema=db_data['schema'], reflect=True)
 Base = automap_base(metadata=meta)
 
 class PollData(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'poll_data'
     __table_args__ = {'extend_existing': 'True'}
 
     id = Column(Integer, primary_key=True)
+    created_on = Column(DateTime, default=func.now())
 
 class User(Base):
-    __tablename__ = 'poll_data'
+    __tablename__ = 'user'
     __table_args__ = {'extend_existing': 'True'}
 
     id = Column(Integer, primary_key=True)
