@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 // const config: SocketIoConfig = { url: 'http://localhost:3001/test', options: {} };
 
 // import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -19,6 +20,7 @@ import { AttemptPollComponent } from './attempt-poll/attempt-poll.component';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     PollModuleRoutingModule,
     // SocketIoModule.forRoot(config)
   ]

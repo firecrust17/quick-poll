@@ -1,4 +1,46 @@
-<p>
-  test works!
-</p>
-<button routerLink="/attempt/1">next</button>
+<form #poll_form [formGroup]="poll_data_payload" (ngSubmit)="validate()" class="">
+	<div class="card mb-2 p-2">
+		<div class="row mt-2">
+			
+			<div class="col-12 mb-2">
+				<label>Question</label>
+				<input type="text" formControlName="question">
+			</div>
+			
+			<div class="col-12 mb-2">
+				<label>Question Type</label>
+				<input type="radio" formControlName="question_type" value="single">Single
+				<input type="radio" formControlName="question_type" value="multiple">Multiple
+				<input type="radio" formControlName="question_type" value="input">Input
+			</div>
+
+			<div *ngIf="poll_data_payload.get('question_type').value != 'input'" class="col-12 mb-2">
+				<label>Options</label>
+				option logic here
+			</div>
+
+			<div class="col-12 mb-2">
+				<label>Answer Limit</label>
+				<input type="number" formControlName="answer_limit">
+			</div>
+
+			<div class="col-12 mb-2">
+				<!-- <label>Participants</label>
+				option logic here -->
+			</div>
+
+			<div class="col-12 mb-2">
+				<label>Timer (in minutes)</label>
+				<input type="number" formControlName="timer">
+			</div>
+
+		</div>
+
+		<button>Create</button>
+
+	</div>
+
+</form>
+
+
+<!-- <button routerLink="/attempt/1">next</button> -->
