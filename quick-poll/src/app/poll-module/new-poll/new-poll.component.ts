@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbService } from '../../services/db.service';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-new-poll',
@@ -14,6 +15,7 @@ export class NewPollComponent implements OnInit {
   constructor(
   	private fbuilder: FormBuilder,
   	private db_service: DbService,
+  	private router: Router,
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,8 @@ export class NewPollComponent implements OnInit {
   	const payload = this.poll_data_payload.value;
   	this.db_service.new_poll(payload).subscribe(res => {
   		if(res.success) {
-  			alert("new poll created");
+  			// alert("new poll created");
+  			this.router.navigate(['./attempt/'+res.data.id]);
   		}
   	});
   }

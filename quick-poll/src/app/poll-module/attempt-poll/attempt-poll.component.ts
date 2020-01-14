@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 // import { Socket } from 'ngx-socket-io';
 import { SocketService } from '../../services/socket.service';
 import { ActivatedRoute } from '@angular/router';
+import { DbService } from '../../services/db.service';
 
 @Component({
   selector: 'app-attempt-poll',
@@ -11,9 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 export class AttemptPollComponent implements OnInit, OnDestroy {
 
 	// active_users = 0;
+  poll_data:any = {};
 	attempt_count = 0;
 	total_members = 0;
-	time_left = 5; 	//	seconds
+	time_left = 0; 	//	seconds
 	time_elapsed = false;
 	interval;
 
@@ -23,7 +25,8 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 
   constructor(
     private socket: SocketService,
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    private db_service: DbService,
   ) {
     this._activatedRoute.params.subscribe(params => {
       this.id = params.id;
@@ -39,18 +42,50 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
       this.process_response(res);
     });
 
+    this.get_poll_data();
+
     // setTimeout(() => {
       // this.socket.join_room(this.id);
     // }, 1000);
 
-  	this.interval = setInterval(() => {
-  		if(--this.time_left == 0){
-  			this.time_out()
-        // this.socket.room_users();
-  		}
-  	}, 1000);
+  	
   	// this.socket.io.emit('join_room', {"room": "id"});
 
+  }
+
+  get_poll_data(){
+    const payload = {"id": parseInt(this.id)};
+    this.db_service.get_poll_data(payload).subscribe(res => {
+      if(res.success){
+
+        this.poll_data = res.data;
+        // console.log(this.poll_data);
+
+        this.calculate_and_start_timer();
+
+      }
+    });
+  }
+
+  calculate_and_start_timer() {
+    // this.poll_data
+    // this.time_left
+    const now: any = new Date();
+    const time: any = new Date(this.poll_data.created_on);
+
+    this.time_left = this.poll_data.timer - Math.round((now-time)/1000)
+
+    if(this.time_left > 0){
+      this.interval = setInterval(() => {
+        if(--this.time_left <= 0){
+          this.time_out()
+          // this.socket.room_users();
+        }
+      }, 1000);
+    } else {
+      this.time_left = 0;
+      this.time_out()
+    }
   }
 
   process_response(res) {

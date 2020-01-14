@@ -17,5 +17,10 @@ export class DbService {
   	return this.http.post<any>(this.new_poll_url, payload);
   }
 
+  private get_poll_data_url = `${this.env.service_url}/get_poll_data`;
+  get_poll_data(payload) {
+  	return this.http.post<any>(this.get_poll_data_url, payload);
+  }
+
 
 }
