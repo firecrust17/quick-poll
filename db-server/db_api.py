@@ -77,16 +77,16 @@ class GetPollData(restful.Resource):
 		# .all() returns list && .one() returns dict
 		orm_rec = session.query(PollData).filter(PollData.id == data['id']).all()
 		
-		return {'success': True, 'data': orm_rec, 'count': len(orm_rec)}
+		return {'success': True, 'data': orm_list(orm_rec), 'count': len(orm_rec)}
 
 
 class GetUserPolls(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		orm_rec = orm_list(session.query(PollData).filter(PollData.owner == data['owner']).all())
+		orm_rec = session.query(PollData).filter(PollData.owner == data['owner']).all()
 		
-		return {'success': True, 'data': orm_rec, 'count': len(orm_rec)}
+		return {'success': True, 'data': orm_list(orm_rec), 'count': len(orm_rec)}
 
 
 #TODO

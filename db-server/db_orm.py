@@ -4,7 +4,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import DateTime, func
-
+import datetime
 
 from get_config import *
 import json
@@ -48,23 +48,15 @@ session = Session()
 
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
-class AlchemyEncoder(json.JSONEncoder):
-
-    def default(self, obj):
-        if isinstance(obj.__class__, DeclarativeMeta):
-            # an SQLAlchemy class
-            fields = {}
-            for field in [x for x in dir(obj) if not x.startswith('_') and x not in ['classes', 'metadata', 'prepare']]:
-                data = obj.__getattribute__(field)
-                try:
-                    json.dumps(data) # this will fail on non-encodable values, like other classes
-                    fields[field] = data
-                except TypeError:
-                    fields[field] = None
-            # a json-encodable dict
-            return fields
-
-        return json.JSONEncoder.default(self, obj)
-
 def orm_list(orm_data):
-    return json.loads(json.dumps(orm_data, cls=AlchemyEncoder))
+    new_list = []
+    for rec in orm_data:
+        new_rec = {}
+        for col in rec.__table__.columns:
+            orm_val = getattr(rec, col.name)
+            if type(orm_val) in [datetime.datetime, datetime.date, datetime.time]:
+                new_rec[col.name] = str(orm_val)
+            else :
+                new_rec[col.name] = orm_val
+        new_list.append(new_rec)
+    return new_list
