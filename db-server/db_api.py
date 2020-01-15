@@ -39,12 +39,34 @@ class GET_TEST(restful.Resource):
 		return {'success': True, 'message': 'get test called', 'data': data}
 
 
-# TODO
 class CreateUser(restful.Resource):
 	def post(self):
 		data = request.get_json()
-		# User
-		return {'success': True, 'message': 'New poll created', 'data': orm_list(orm_rec)}
+		
+		if len(session.query(User).filter(User.email == data['email']).all()):
+			return {'success': False, 'message': 'Email Already exists', 'error_code': 1}
+
+		orm_rec = User(
+            user_name = data['user_name'],
+            email = data['email'],
+            password = data['password'])
+		
+		try:
+			session.add(orm_rec)
+			session.commit()
+			return {'success': True, 'message': 'New User Created', 'data': orm_dict(orm_rec)}
+		except Exception as e:
+			return {'success': False, 'message': 'Some Error Occured', 'error_code': 2}		
+
+
+class LoginUser(restful.Resource):
+	def post(self):
+		data = request.get_json()
+		try:
+			orm_rec = session.query(User).filter(User.email == data['email'], User.password == data['password']).one()
+			return {'success': True, 'message': 'Login Successful', 'data': orm_dict(orm_rec)}
+		except Exception as e:
+			return {'success': False, 'message': 'Email and Password did not match', 'error_code': 1}
 
 
 class NewPoll(restful.Resource):
@@ -62,7 +84,7 @@ class NewPoll(restful.Resource):
             show_result_on = data['show_result_on'],
             is_anonymous = data['is_anonymous'],
             created_on = datetime.datetime.now(),
-            owner = data['owner'])
+            id_user = data['id_user'])
         # print (orm_rec)
 
 		session.add(orm_rec)
@@ -90,6 +112,17 @@ class GetUserPolls(restful.Resource):
 		return {'success': True, 'data': orm_list(orm_rec), 'count': len(orm_rec)}
 
 
+class GetAttemptCount(restful.Resource):
+	def post(self):
+		data = request.get_json()
+
+		orm_rec = session.query(PollAnswers.answered_by, func.count(PollAnswers.answered_by))\
+						.filter(PollAnswers.id_poll_data == data['id_poll_data'])\
+						.group_by(PollAnswers.answered_by).all()
+		# print(orm_rec)
+		return {'success': True, 'data': len(orm_rec)}
+
+
 #TODO
 class AnswerPoll(restful.Resource):
 	def post(self):
@@ -109,7 +142,7 @@ class GetPollResults(restful.Resource):
 
 		# User
 		# PollAnswers
-		orm_rec = session.query(PollData).filter(PollData.id == data['id']).all()
+		orm_rec = session.query(PollData).filter(PollData.id == data['poll_id']).all()
 		
 		return {'success': True, 'data': orm_list(orm_rec)}
 
@@ -128,8 +161,10 @@ api.add_resource(POST_TEST, '/post_test')
 api.add_resource(GET_TEST, '/get_test')
 
 api.add_resource(CreateUser, '/create_user')
+api.add_resource(LoginUser, '/login_user')
 api.add_resource(NewPoll, '/new_poll')
 api.add_resource(GetPollData, '/get_poll_data')
 api.add_resource(GetUserPolls, '/get_user_polls')
+api.add_resource(GetAttemptCount, '/get_attempt_count')
 api.add_resource(AnswerPoll, '/answer_poll')
 api.add_resource(GetPollResults, '/get_poll_results')
