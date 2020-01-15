@@ -1,0 +1,55 @@
+<div *ngIf="!is_new">
+	login
+	<form [formGroup]="login_payload" (ngSubmit)="validate('login')" class="">
+		<div class="card mb-2 p-2">
+			<div class="row mt-2">
+				
+				<div class="col-12 mb-2">
+					<label>Email</label>
+					<input type="email" formControlName="email">
+				</div>
+				
+				<div class="col-12 mb-2">
+					<label>Password</label>
+					<input type="password" formControlName="password">
+				</div>
+
+			</div>
+			<button>Login</button>
+		</div>
+	</form>
+
+</div>
+
+<div *ngIf="is_new">
+	create
+	<form [formGroup]="login_payload" (ngSubmit)="validate('login')" class="">
+		<div class="card mb-2 p-2">
+			<div class="row mt-2">
+				
+				<div class="col-12 mb-2">
+					<label>Name</label>
+					<input type="text" formControlName="user_name">
+				</div>
+				
+				<div class="col-12 mb-2">
+					<label>Email</label>
+					<input type="email" formControlName="email">
+				</div>
+				
+				<div class="col-12 mb-2">
+					<label>Password</label>
+					<input type="password" formControlName="password">
+				</div>
+
+				<div class="col-12 mb-2">
+					<label>Confirm Password</label>
+					<input type="password" formControlName="confirm_password">
+				</div>
+
+			</div>
+			<button>Sign up</button>
+		</div>
+	</form>
+
+</div>

@@ -12,6 +12,7 @@ import { DbService } from '../../services/db.service';
 export class AttemptPollComponent implements OnInit, OnDestroy {
 
 	// active_users = 0;
+  user_id;
   poll_data:any = {};
 	attempt_count = 0;
 	total_members = 0;
@@ -19,7 +20,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 	time_elapsed = false;
 	interval;
 
-	has_attempted = false;
+	attempted = false;
 
   id;
 
@@ -29,13 +30,15 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     private db_service: DbService,
   ) {
     this._activatedRoute.params.subscribe(params => {
-      this.id = params.id;
-      this.socket.initiate_connection({"room": params.id, "user_id": 123, "user_name": "Aneesh"});
-      this.socket.socket_event('join-room', this.id);
+      this.id = parseInt(params.id);
+      this.user_id = parseInt(localStorage.getItem('poll_user'))
+      this.socket.initiate_connection({"room": params.id, "user_id": this.user_id, "user_name": "Aneesh"});
+      this.socket.socket_event('join-room', params.id);
     });
   }
 
   ngOnInit() {
+
 
     this.socket.get_data_all().subscribe(res => {
       console.log(res.data);
@@ -43,6 +46,8 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     });
 
     this.get_poll_data();
+    this.get_attempt_count();
+    this.has_attempted();
 
     // setTimeout(() => {
       // this.socket.join_room(this.id);
@@ -54,15 +59,34 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   }
 
   get_poll_data(){
-    const payload = {"id": parseInt(this.id)};
+    const payload = {"id": this.id};
     this.db_service.get_poll_data(payload).subscribe(res => {
       if(res.success){
 
         this.poll_data = res.data;
+        this.total_members = res.data.participant_count;
         // console.log(this.poll_data);
 
         this.calculate_and_start_timer();
 
+      }
+    });
+  }
+
+  get_attempt_count() {
+    const payload = {"id_poll_data": this.id};
+    this.db_service.get_attempt_count(payload).subscribe(res => {
+      if(res.success) {
+        this.attempt_count = res.data;
+      }
+    });
+  }
+
+  has_attempted() {
+    const payload = {"poll_id": this.id, "user_id": this.user_id};
+    this.db_service.has_attempted(payload).subscribe(res => {
+      if(res.success) {
+        this.attempted = res.data;
       }
     });
   }
@@ -113,6 +137,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     switch(data.type) {
       case 'attempted':
         // increment attempt count
+        this.attempt_count++;
       break;
 
     }
@@ -126,19 +151,19 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   	// console.log("clear");
   	clearInterval(this.interval);
   	this.time_elapsed = true;
-  	this.has_attempted = true;		
+  	this.attempted = true;		
   	// this.socket.emit('broad-cast', {id: "id"});
   }
 
   attempt() {
   	console.log("save result");
-  	this.has_attempted = true;
+  	this.attempted = true;
     this.socket.socket_event('data_in_all', this.id, {type: "attempted"});
   }
 
   show_result() {
   	console.log("show result");
-  	this.has_attempted = true;
+  	this.attempted = true;
   }
 
   ngOnDestroy() {

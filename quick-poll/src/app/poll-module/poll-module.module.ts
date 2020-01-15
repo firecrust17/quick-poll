@@ -10,13 +10,15 @@ import { NewPollComponent } from './new-poll/new-poll.component';
 import { PollHistoryComponent } from './poll-history/poll-history.component';
 import { PollResultsComponent } from './poll-results/poll-results.component';
 import { AttemptPollComponent } from './attempt-poll/attempt-poll.component';
+import { PollLoginComponent } from './poll-login/poll-login.component';
 
 @NgModule({
   declarations: [
     NewPollComponent,
     PollHistoryComponent,
     PollResultsComponent,
-    AttemptPollComponent
+    AttemptPollComponent,
+    PollLoginComponent
   ],
   imports: [
     CommonModule,

@@ -11,6 +11,7 @@ import { Router } from '@angular/router'
 export class NewPollComponent implements OnInit {
 
 	poll_data_payload: FormGroup;
+  poll_user;
 
   constructor(
   	private fbuilder: FormBuilder,
@@ -19,6 +20,12 @@ export class NewPollComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if(!localStorage.getItem('poll_user')){
+      this.router.navigate(['./login']);
+    } else {
+      this.poll_user = parseInt(localStorage.getItem('poll_user'));
+    }
+
   	this.poll_data_payload = this.fbuilder.group({
 			"question": this.fbuilder.control("", Validators.required),
 			"question_type": this.fbuilder.control("single"),
@@ -28,7 +35,7 @@ export class NewPollComponent implements OnInit {
 			"timer": this.fbuilder.control(300, Validators.required),
 			"show_result_on": this.fbuilder.control(""),
 			"is_anonymous": this.fbuilder.control(true),
-			"owner": this.fbuilder.control(2)
+			"id_user": this.fbuilder.control(2)
 		});
   }
 

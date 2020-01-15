@@ -5,6 +5,7 @@ import { NewPollComponent } from './new-poll/new-poll.component';
 import { PollHistoryComponent } from './poll-history/poll-history.component';
 import { PollResultsComponent } from './poll-results/poll-results.component';
 import { AttemptPollComponent } from './attempt-poll/attempt-poll.component';
+import { PollLoginComponent } from './poll-login/poll-login.component';
 
 const routes: Routes = [
 	{
@@ -16,12 +17,20 @@ const routes: Routes = [
 		component: PollHistoryComponent
 	},
 	{
-		path: 'results',
+		path: 'results:/id',
 		component: PollResultsComponent
 	},
 	{
 		path: 'attempt/:id',
 		component: AttemptPollComponent
+	},
+	{
+		path: 'login',
+		component: PollLoginComponent
+	},
+	{
+		path: 'login/:id',
+		component: PollLoginComponent
 	},
 	{
 		path: '**',

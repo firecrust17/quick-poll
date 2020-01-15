@@ -1,15 +1,15 @@
 <div *ngIf="total_members">
-	{{attempt_count}}/{{total_members}}
+	Total Attempts: {{attempt_count}}/{{total_members}}
 </div>
 <div *ngIf="!total_members">
-	{{attempt_count}}
+	Total Attempts: {{attempt_count}}
 </div>
 
 <div>
-	{{time_left}}
+	Time Left: {{time_left}} seconds
 </div>
 
-<div *ngIf="has_attempted">
+<div *ngIf="attempted">
 	<div *ngIf="!time_elapsed">
 		Done. Wait.
 	</div>
@@ -17,7 +17,7 @@
 		<button (click)="show_result()">Results</button>
 	</div>
 </div>
-<div *ngIf="!has_attempted && !time_elapsed">
+<div *ngIf="!attempted && !time_elapsed">
 	show data
 	<button (click)="attempt()">Submit</button>
 </div>
