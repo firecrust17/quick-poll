@@ -17,7 +17,7 @@ export class PollResultsComponent implements OnInit {
     private db_service: DbService,
   ) {
   	this._activatedRoute.params.subscribe(params => {
-      this.poll_id = parseInt(params.id);
+      this.poll_id = parseInt(params.poll_id);
     });
   }
 

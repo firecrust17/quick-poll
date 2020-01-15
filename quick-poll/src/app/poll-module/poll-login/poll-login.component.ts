@@ -22,8 +22,8 @@ export class PollLoginComponent implements OnInit {
     private db_service: DbService,
   ) {
   	this._activatedRoute.params.subscribe(params => {
-      if(params.id != undefined){
-      	this.poll_id = params.id;
+      if(params.poll_id != undefined){
+      	this.poll_id = params.poll_id;
       }
     });
   }

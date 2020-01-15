@@ -13,15 +13,15 @@ const routes: Routes = [
 		component: NewPollComponent
 	},
 	{
-		path: 'history',
+		path: 'history/:user_id',
 		component: PollHistoryComponent
 	},
 	{
-		path: 'results:/id',
+		path: 'results/:poll_id',
 		component: PollResultsComponent
 	},
 	{
-		path: 'attempt/:id',
+		path: 'attempt/:poll_id',
 		component: AttemptPollComponent
 	},
 	{
@@ -29,7 +29,7 @@ const routes: Routes = [
 		component: PollLoginComponent
 	},
 	{
-		path: 'login/:id',
+		path: 'login/:poll_id',
 		component: PollLoginComponent
 	},
 	{

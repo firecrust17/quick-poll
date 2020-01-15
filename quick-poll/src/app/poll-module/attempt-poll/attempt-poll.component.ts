@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 // import { Socket } from 'ngx-socket-io';
 import { SocketService } from '../../services/socket.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
 
 @Component({
@@ -27,13 +27,18 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   constructor(
     private socket: SocketService,
     private _activatedRoute: ActivatedRoute,
+    private router: Router,
     private db_service: DbService,
   ) {
     this._activatedRoute.params.subscribe(params => {
-      this.id = parseInt(params.id);
-      this.user_id = parseInt(localStorage.getItem('poll_user'))
-      this.socket.initiate_connection({"room": params.id, "user_id": this.user_id, "user_name": "Aneesh"});
-      this.socket.socket_event('join-room', params.id);
+      this.id = parseInt(params.poll_id);
+      if(localStorage.getItem('poll_user')){
+        this.user_id = parseInt(localStorage.getItem('poll_user'))
+      } else {
+        this.router.navigate(['./login/'+this.id]);
+      }
+      this.socket.initiate_connection({"room": this.id, "user_id": this.user_id, "user_name": "Aneesh"});
+      this.socket.socket_event('join-room', this.id);
     });
   }
 
@@ -45,9 +50,9 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
       this.process_response(res);
     });
 
-    this.get_poll_data();
-    this.get_attempt_count();
-    this.has_attempted();
+    // this.get_poll_data();
+    // this.get_attempt_count();
+    // this.has_attempted();
 
     // setTimeout(() => {
       // this.socket.join_room(this.id);
@@ -138,13 +143,14 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
       case 'attempted':
         // increment attempt count
         this.attempt_count++;
+        // this.get_attempt_count();
       break;
 
     }
   }
 
   send() {
-    this.socket.socket_event('data_in_all', this.id, this.id);
+    this.socket.socket_event('data_in_all', this.id, {type: "attempted"});
   }
 
   time_out() {
@@ -155,15 +161,19 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   	// this.socket.emit('broad-cast', {id: "id"});
   }
 
-  attempt() {
-  	console.log("save result");
-  	this.attempted = true;
-    this.socket.socket_event('data_in_all', this.id, {type: "attempted"});
+  answer_poll() {
+    const payload = {};
+    this.db_service.answer_poll(payload).subscribe(res => {
+      if(res.success) {
+      	this.attempted = true;
+        this.socket.socket_event('data_in_all', this.id, {type: "attempted"});
+      }
+    });
   }
 
   show_result() {
-  	console.log("show result");
-  	this.attempted = true;
+  	this.router.navigate(['./results/'+this.id]);
+    // this.router.navigate(['./login']);
   }
 
   ngOnDestroy() {
