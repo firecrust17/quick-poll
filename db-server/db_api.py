@@ -98,9 +98,11 @@ class GetPollData(restful.Resource):
 		data = request.get_json()
 
 		# .all() returns list && .one() returns dict
-		orm_rec = session.query(PollData).filter(PollData.id == data['id']).one()
-		
-		return {'success': True, 'data': orm_dict(orm_rec)}
+		try:
+			orm_rec = session.query(PollData).filter(PollData.id == data['id']).one()
+			return {'success': True, 'data': orm_dict(orm_rec)}
+		except Exception as e:
+			return {'success': False, 'message': 'No Record Found'}
 
 
 class GetUserPolls(restful.Resource):
@@ -121,6 +123,16 @@ class GetAttemptCount(restful.Resource):
 						.group_by(PollAnswers.answered_by).all()
 		# print(orm_rec)
 		return {'success': True, 'data': len(orm_rec)}
+
+
+class HasAttempted(restful.Resource):
+	def post(self):
+		data = request.get_json()
+
+		orm_rec = session.query(PollAnswers).filter(PollAnswers.id_poll_data == data['poll_id'], 
+													PollAnswers.answered_by == str(data['user_id'])).all()
+		# print(orm_rec)
+		return {'success': True, 'data': True if len(orm_rec) else False}
 
 
 #TODO
@@ -166,5 +178,6 @@ api.add_resource(NewPoll, '/new_poll')
 api.add_resource(GetPollData, '/get_poll_data')
 api.add_resource(GetUserPolls, '/get_user_polls')
 api.add_resource(GetAttemptCount, '/get_attempt_count')
+api.add_resource(HasAttempted, '/has_attempted')
 api.add_resource(AnswerPoll, '/answer_poll')
 api.add_resource(GetPollResults, '/get_poll_results')
