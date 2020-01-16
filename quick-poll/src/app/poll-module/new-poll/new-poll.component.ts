@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DbService } from '../../services/db.service';
 import { Router } from '@angular/router'
 
@@ -29,7 +29,7 @@ export class NewPollComponent implements OnInit {
   	this.poll_data_payload = this.fbuilder.group({
 			"question": this.fbuilder.control("", Validators.required),
 			"question_type": this.fbuilder.control("single"),
-			"options": this.fbuilder.control([]),
+			"options": this.fbuilder.array([]),
 			"answer_limit": this.fbuilder.control(3),
 			"participant_count": this.fbuilder.control(0),
 			"timer": this.fbuilder.control(300, Validators.required),
@@ -37,10 +37,12 @@ export class NewPollComponent implements OnInit {
 			"is_anonymous": this.fbuilder.control(true),
 			"id_user": this.fbuilder.control(2)
 		});
+    this.add_option();
   }
+  get formArray() { return <FormArray>this.poll_data_payload.get('options'); }
 
   validate() {
-  	if(this.poll_data_payload.status == 'VALID'){
+  	if(this.poll_data_payload.status == 'VALID' && this.formArray.status == 'VALID'){
   		this.new_poll();
   	}
   }
@@ -53,6 +55,26 @@ export class NewPollComponent implements OnInit {
   			this.router.navigate(['./attempt/'+res.data.id]);
   		}
   	});
+  }
+
+  add_option() {
+    const control = <FormArray>this.poll_data_payload.controls['options'];
+    control.push(
+      this.fbuilder.group({
+        // 'id': this._fb.control(-1),
+        'option': this.fbuilder.control('', Validators.required),
+      })
+    );
+  }
+
+  remove_option(index) {
+    this.formArray.removeAt(index);
+  }
+
+  clear_options() {
+    // this.formArray.clear();
+    this.poll_data_payload.controls['options'] = this.fbuilder.array([]);
+    console.log(this.formArray);
   }
 
 }

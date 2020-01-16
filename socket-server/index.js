@@ -69,7 +69,7 @@ ns_data
 
 ns_test
 .on('connection', function(socket){
-	console.log(socket.handshake.query.room);
+	// console.log(socket.handshake.query.room);
 
 
   // console.log('connected');
@@ -96,7 +96,7 @@ ns_test
   })
 
   socket.on('data_in_all', function(msg) {
-  	console.log(ns_test.adapter.rooms);
+  	// console.log(ns_test.adapter.rooms);
   	// console.log(ns_test.server);
   	ns_test.to(socket.handshake.query.room).emit('data_out_all', msg);
   })
@@ -108,7 +108,7 @@ ns_test
   // });
 
   socket.on('disconnect', function(reason){
-    console.log("disconnected", socket.server.engine.clientsCount, reason);
+    // console.log("disconnected", socket.server.engine.clientsCount, reason);
     const room = socket.handshake.query.room;
     var msg;
     if(ns_test.adapter.rooms[room] != undefined){

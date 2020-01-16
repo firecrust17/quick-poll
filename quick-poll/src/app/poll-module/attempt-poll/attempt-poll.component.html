@@ -9,19 +9,38 @@
 	Time Left: {{time_left}} seconds
 </div>
 
-<div *ngIf="attempted">
-	<div *ngIf="!time_elapsed">
-		Done. Wait.
-	</div>
-	<div *ngIf="time_elapsed">
-		<button (click)="show_result()">Results</button>
-	</div>
-</div>
-<div *ngIf="!attempted && !time_elapsed">
-	show data
-	<button (click)="attempt()">Submit</button>
+
+<div *ngIf="time_elapsed">
+	<button (click)="show_result()">Results</button>
 </div>
 
-<button (click)="send()">
+<div *ngIf="!time_elapsed">
+	<div *ngIf="attempted">
+		<div *ngIf="!time_elapsed">
+			Done. Wait.
+		</div>
+	</div>
+
+	<div *ngIf="!attempted">
+		<div *ngIf="!time_elapsed">	
+			<ng-container *ngIf="poll_data.question_type != 'input'">
+				<div *ngFor="let op of poll_data.options; let i=index;">
+					<input type="checkbox" id="opt{{i}}" [(ngModel)]="op.value" value="op.value" (change)="clear_if_single($event, i)"> {{op.option}}
+				</div>
+			</ng-container>
+			<ng-container *ngIf="poll_data.question_type == 'input'">
+				<input type="text" [(ngModel)]="option_input">
+			</ng-container>
+		</div>
+
+		<button (click)="answer_poll()">Submit</button>
+	</div>
+
+</div>
+
+
+
+
+<!-- <button (click)="send()">
 	send
-</button>
+</button> -->

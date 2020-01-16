@@ -4,6 +4,8 @@ import { SocketService } from '../../services/socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
 
+import * as $ from 'jquery';
+
 @Component({
   selector: 'app-attempt-poll',
   templateUrl: './attempt-poll.component.html',
@@ -19,6 +21,9 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 	time_left = 0; 	//	seconds
 	time_elapsed = false;
 	interval;
+
+  option_array = [];
+  option_input = "";
 
 	attempted = false;
 
@@ -38,7 +43,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
         this.router.navigate(['./login/'+this.id]);
       }
       this.socket.initiate_connection({"room": this.id, "user_id": this.user_id, "user_name": "Aneesh"});
-      this.socket.socket_event('join-room', this.id);
+      this.socket.socket_event('join_room', this.id);
     });
   }
 
@@ -46,13 +51,13 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 
 
     this.socket.get_data_all().subscribe(res => {
-      console.log(res.data);
+      console.log(res);
       this.process_response(res);
     });
 
-    // this.get_poll_data();
-    // this.get_attempt_count();
-    // this.has_attempted();
+    this.get_poll_data();
+    this.get_attempt_count();
+    this.has_attempted();
 
     // setTimeout(() => {
       // this.socket.join_room(this.id);
@@ -69,6 +74,9 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
       if(res.success){
 
         this.poll_data = res.data;
+        for(var i=0; i<this.poll_data.options.length; i++) {
+          this.option_array[i] = false;
+        }
         this.total_members = res.data.participant_count;
         // console.log(this.poll_data);
 
@@ -117,6 +125,33 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     }
   }
 
+  clear_if_single(event, index) {
+    // console.log(event.target.checked)
+    if(this.poll_data.question_type == 'single') {
+      if(event.target.checked){
+        for(var i=0; i<this.option_array.length; i++) {
+          if(i != index){
+            this.option_array[i] = false;
+            $('#opt'+i).prop('checked', false);
+          }
+        }
+        this.option_array[index] = true;
+      } else {
+        for(var i=0; i<this.option_array.length; i++) {
+          this.option_array[i] = false;
+          $('#opt'+i).prop('checked', false);
+        }
+      }
+
+    } else if(this.poll_data.question_type == 'multiple') {
+      this.option_array[index] = event.target.checked;
+      $('#opt'+index).prop('checked', event.target.checked);
+
+    } else {
+      // do nothing
+    }
+  }
+
   process_response(res) {
     switch(res.event_type) {
       case 'join_room':
@@ -162,7 +197,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   }
 
   answer_poll() {
-    const payload = {};
+    const payload = this.prepare_payload();
     this.db_service.answer_poll(payload).subscribe(res => {
       if(res.success) {
       	this.attempted = true;
@@ -171,13 +206,29 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     });
   }
 
+  prepare_payload() {
+    var answer = [];
+    if(this.poll_data.question_type == 'input') {
+      answer[0] = this.option_input;
+    } else {
+      for(var i=0; i<this.option_array.length; i++) {
+        if(this.option_array[i]){
+          answer.push(this.poll_data.options[i]['option']);
+        }
+      }
+    }
+    // console.log(answer);
+
+    return {"answer": answer, "answered_by": this.user_id, "id_poll_data": this.poll_data.id};
+  }
+
   show_result() {
   	this.router.navigate(['./results/'+this.id]);
     // this.router.navigate(['./login']);
   }
 
   ngOnDestroy() {
-    this.socket.io.emit('disconnect', {'event_type': 'disconnect', 'room': this.id});
+    this.socket.io.close();
   }
 
 }

@@ -11,12 +11,22 @@
 				<label>Question Type</label>
 				<input type="radio" formControlName="question_type" value="single">Single
 				<input type="radio" formControlName="question_type" value="multiple">Multiple
-				<input type="radio" formControlName="question_type" value="input">Input
+				<input type="radio" formControlName="question_type" value="input" (click)="clear_options()">Input
 			</div>
 
 			<div *ngIf="poll_data_payload.get('question_type').value != 'input'" class="col-12 mb-2">
 				<label>Options</label>
-				option logic here
+				<div formArrayName="options">
+					<div *ngFor="let option of poll_data_payload.get('options')['controls']; let i = index">
+						<form [formGroup]="option">
+							<div>
+            					<input id="contact_data{{i}}" type="text" formControlName="option" placeholder="Choice {{i+1}}">
+							</div>
+						</form>
+						<button (click)="add_option()">Add</button>
+						<button *ngIf="formArray.length != 1" (click)="remove_option(i)">remove</button>
+					</div>
+				</div>
 			</div>
 
 			<div class="col-12 mb-2">
