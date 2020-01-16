@@ -135,16 +135,27 @@ class HasAttempted(restful.Resource):
 		return {'success': True, 'data': True if len(orm_rec) else False}
 
 
-#TODO
 class AnswerPoll(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		# User
-		# PollAnswers
-		orm_rec = session.query(PollData).filter(PollData.id == data['id']).all()
+		data['answer']
+		data['answered_by']
+		data['id_poll_data']
+
+		orm_rec = []
+		i = 0
+		for ans in data['answer']:
+			print(ans, data['answered_by'], data['id_poll_data'])
+			orm_rec.append(PollAnswers(
+							answer = ans,
+							answered_by = data['answered_by'],
+							id_poll_data = data['id_poll_data']))
+			session.add(orm_rec[i])
+			i = i+1
+		session.commit()
 		
-		return {'success': True, 'data': orm_list(orm_rec)}
+		return {'success': True, 'message': 'Answer Saved', 'data': orm_list(orm_rec)}
 
 
 #TODO
