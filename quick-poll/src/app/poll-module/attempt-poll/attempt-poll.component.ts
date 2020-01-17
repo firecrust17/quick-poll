@@ -198,10 +198,16 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 
   answer_poll() {
     const payload = this.prepare_payload();
+    if(!payload.answer.length) {
+      alert("Please Select an answer to Submit");
+      return false;
+    }
     this.db_service.answer_poll(payload).subscribe(res => {
       if(res.success) {
       	this.attempted = true;
         this.socket.socket_event('data_in_all', this.id, {type: "attempted"});
+      } else if (res.error_code == 1) {
+        this.attempted = true;
       }
     });
   }

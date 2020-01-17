@@ -143,6 +143,10 @@ class AnswerPoll(restful.Resource):
 		data['answered_by']
 		data['id_poll_data']
 
+		orm_rec = session.query(PollAnswers).filter(PollAnswers.id_poll_data == data['id_poll_data'], PollAnswers.answered_by == data['answered_by']).all()
+		if len(orm_rec):
+			return {'success': False, 'message': 'Poll Already Submitted', 'error_code': 1}
+
 		orm_rec = []
 		i = 0
 		for ans in data['answer']:
