@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.1" last-position="0,99" last-zoom="1"
+	 default-schema="public" default-owner="postgres">
+<database name="poll_db_4" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<sequence name="poll_data_id"
+	 start="1" increment="1"
+	 min-value="1" max-value="2147483647"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="poll_data">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="552" y="240"/>
+	<column name="id" not-null="true" sequence="public.poll_data_id">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="question" not-null="true">
+		<type name="varchar" length="140"/>
+	</column>
+	<column name="question_type">
+		<type name="varchar" length="20"/>
+		<comment><![CDATA[single / multiple / input]]></comment>
+	</column>
+	<column name="options">
+		<type name="jsonb" length="0"/>
+	</column>
+	<column name="answer_limit">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[max answers in case of multiple]]></comment>
+	</column>
+	<column name="participant_count">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[fixed / indefinite]]></comment>
+	</column>
+	<column name="timer" default-value="300">
+		<type name="bigint" length="0"/>
+		<comment><![CDATA[in seconds]]></comment>
+	</column>
+	<column name="show_result_on">
+		<type name="varchar" length="20"/>
+		<comment><![CDATA[on answering / on time out]]></comment>
+	</column>
+	<column name="is_anonymous" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="created_on">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="poll_hash">
+		<type name="varchar" length="40"/>
+		<comment><![CDATA[hash instead of poll id]]></comment>
+	</column>
+	<constraint name="poll_data_pk" type="pk-constr" table="public.poll_data">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_user" index="11"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="user_fk" index="1"/>
+	</customidxs>
+</table>
+
+<sequence name="user_id"
+	 start="1" increment="1"
+	 min-value="0" max-value="2147483647"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="user">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="157" y="137"/>
+	<column name="id" not-null="true" sequence="public.user_id">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="user_name">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="email">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="password">
+		<type name="varchar" length="40"/>
+		<comment><![CDATA[MD5 encrypted]]></comment>
+	</column>
+	<constraint name="user_pk" type="pk-constr" table="public.&quot;user&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="user_has_many_poll_data" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#3af639"
+	 src-table="public.&quot;user&quot;"
+	 dst-table="public.poll_data"
+	 src-required="false" dst-required="false"/>
+
+<sequence name="poll_answer_id"
+	 start="1" increment="1"
+	 min-value="0" max-value="2147483647"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="poll_answers">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1037" y="369"/>
+	<column name="id" not-null="true" sequence="public.poll_answer_id">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="answered_by">
+		<type name="bigint" length="100"/>
+		<comment><![CDATA[answerer unique identifier]]></comment>
+	</column>
+	<column name="answer">
+		<type name="varchar" length="100"/>
+	</column>
+	<constraint name="poll_answers_pk" type="pk-constr" table="public.poll_answers">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_poll_data" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="poll_data_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="poll_data_has_many_poll_answers" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#b4cb62"
+	 src-table="public.poll_data"
+	 dst-table="public.poll_answers"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_poll_results_view_poll_answers" type="reltv"
+	 src-table="public.poll_results_view"
+	 dst-table="public.poll_answers"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_poll_results_view_user" type="reltv"
+	 src-table="public.poll_results_view"
+	 dst-table="public.&quot;user&quot;"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_poll_results_view_poll_data" type="reltv"
+	 src-table="public.poll_results_view"
+	 dst-table="public.poll_data"
+	 src-required="false" dst-required="false"/>
+
+<view name="poll_results_view">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="278" y="555"/>
+	<reference table="public.poll_answers" column="id_poll_data"/>
+	<reference table="public.poll_answers" column="answer"/>
+	<reference table="public.&quot;user&quot;" column="user_name"/>
+	<reference table="public.poll_data" column="question"/>
+	<reference table="public.poll_data" column="question_type"/>
+	<reference table="public.poll_data" column="options"/>
+	<reference table="public.poll_answers"/>
+	<reference table="public.poll_data"/>
+	<reference table="public.&quot;user&quot;"/>
+	<expression type="select-exp">0,1,2,3,4,5</expression>
+	<expression type="from-exp">6,7,8</expression>
+</view>
+
+</dbmodel>
