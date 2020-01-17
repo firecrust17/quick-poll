@@ -4,14 +4,23 @@
 			
 			<div class="col-12 mb-2">
 				<label>Question</label>
-				<input type="text" formControlName="question">
+				<input class="form-control" type="text" formControlName="question">
 			</div>
 			
 			<div class="col-12 mb-2">
 				<label>Question Type</label>
-				<input type="radio" formControlName="question_type" value="single" (click)="add_option('one')">Single
-				<input type="radio" formControlName="question_type" value="multiple" (click)="add_option('one')">Multiple
-				<input type="radio" formControlName="question_type" value="input" (click)="clear_options()">Input
+				<div class="form-check">
+					<input class="form-check-input" type="radio" formControlName="question_type" value="single" (click)="add_option('one')">
+					<label class="form-check-label">Single</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" formControlName="question_type" value="multiple" (click)="add_option('one')">
+					<label class="form-check-label">Multiple</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" formControlName="question_type" value="input" (click)="clear_options()">
+					<label class="form-check-label">Input</label>
+				</div>
 			</div>
 
 			<div *ngIf="poll_data_payload.get('question_type').value != 'input'" class="col-12 mb-2">
@@ -19,12 +28,16 @@
 				<div formArrayName="options">
 					<div *ngFor="let option of poll_data_payload.get('options')['controls']; let i = index">
 						<form [formGroup]="option">
-							<div>
-            					<input id="contact_data{{i}}" type="text" formControlName="option" placeholder="Choice {{i+1}}">
+							<div class="row mb-1">
+								<div class="col-6">
+	            					<input class="form-control" id="contact_data{{i}}" type="text" formControlName="option" placeholder="Choice {{i+1}}">
+								</div>
+								<div class="col-6">
+									<button class="btn btn-primary mr-2" (click)="add_option()">Add</button>
+									<button class="btn btn-primary mr-2" *ngIf="formArray.length != 1" (click)="remove_option(i)">Remove</button>
+								</div>
 							</div>
 						</form>
-						<button (click)="add_option()">Add</button>
-						<button *ngIf="formArray.length != 1" (click)="remove_option(i)">remove</button>
 					</div>
 				</div>
 			</div>
@@ -41,12 +54,12 @@
 
 			<div class="col-12 mb-2">
 				<label>Timer (in minutes)</label>
-				<input type="number" formControlName="timer">
+				<input class="form-control" type="number" formControlName="timer">
 			</div>
 
 		</div>
 
-		<button>Create</button>
+		<button class="btn btn-primary">Create</button>
 
 	</div>
 
