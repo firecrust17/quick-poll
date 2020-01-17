@@ -3,14 +3,18 @@
 </div>
 <div *ngIf="(results | json) != {}">
 	<h2>{{results.question}}</h2>
-	<table>
+	<table class="table table-bordered">
 		<thead>
-			<th>Option</th>
-			<th>Count</th>
-			<th>Answer By</th>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Option</th>
+				<th scope="col">Count</th>
+				<th scope="col">Answer By</th>
+			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let row of results.answer_count_map">
+			<tr *ngFor="let row of results.answer_count_map; let i=index">
+				<th scope="row">{{i+1}}</th>
 				<td>{{row.option}}</td>
 				<td>{{row.count}}</td>
 				<td>
@@ -22,4 +26,5 @@
 			</tr>
 		</tbody>
 	</table>
+
 </div>

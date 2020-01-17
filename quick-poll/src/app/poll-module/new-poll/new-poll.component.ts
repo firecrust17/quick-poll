@@ -57,7 +57,12 @@ export class NewPollComponent implements OnInit {
   	});
   }
 
-  add_option() {
+  add_option(type=null) {
+    if(type == 'one') {
+      if(this.formArray['controls']['length'] >= 1) {
+        return;
+      }
+    }
     const control = <FormArray>this.poll_data_payload.controls['options'];
     control.push(
       this.fbuilder.group({
@@ -74,7 +79,6 @@ export class NewPollComponent implements OnInit {
   clear_options() {
     // this.formArray.clear();
     this.poll_data_payload.controls['options'] = this.fbuilder.array([]);
-    console.log(this.formArray);
   }
 
 }

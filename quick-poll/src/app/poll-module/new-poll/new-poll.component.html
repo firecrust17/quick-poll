@@ -9,8 +9,8 @@
 			
 			<div class="col-12 mb-2">
 				<label>Question Type</label>
-				<input type="radio" formControlName="question_type" value="single">Single
-				<input type="radio" formControlName="question_type" value="multiple">Multiple
+				<input type="radio" formControlName="question_type" value="single" (click)="add_option('one')">Single
+				<input type="radio" formControlName="question_type" value="multiple" (click)="add_option('one')">Multiple
 				<input type="radio" formControlName="question_type" value="input" (click)="clear_options()">Input
 			</div>
 

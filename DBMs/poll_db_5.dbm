@@ -100,6 +100,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar" length="40"/>
 		<comment><![CDATA[MD5 encrypted]]></comment>
 	</column>
+	<column name="age">
+		<type name="smallint" length="0"/>
+	</column>
 	<constraint name="user_pk" type="pk-constr" table="public.&quot;user&quot;">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
