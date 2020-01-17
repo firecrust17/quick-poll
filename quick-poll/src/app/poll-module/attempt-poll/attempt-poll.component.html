@@ -23,6 +23,7 @@
 
 	<div *ngIf="!attempted">
 		<div *ngIf="!time_elapsed">	
+			<h2>{{poll_data.question}}</h2>
 			<ng-container *ngIf="poll_data.question_type != 'input'">
 				<div *ngFor="let op of poll_data.options; let i=index;">
 					<input type="checkbox" id="opt{{i}}" [(ngModel)]="op.value" value="op.value" (change)="clear_if_single($event, i)"> {{op.option}}
