@@ -10,7 +10,7 @@ import { DbService } from '../../services/db.service';
 })
 export class PollLoginComponent implements OnInit {
 
-	is_new = false;
+	is_new = true;
 	poll_id = null;
 	login_payload: FormGroup;
 	signup_payload: FormGroup;

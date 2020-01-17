@@ -4,7 +4,7 @@
         <username>postgres</username>
 		<pwd>test</pwd>
 		<host>localhost</host>
-		<dbname>poll_db_2</dbname>
+		<dbname>poll_db_4</dbname>
 		<schema>public</schema>
     </db_connection>
     

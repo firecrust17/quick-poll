@@ -10,7 +10,7 @@ import { DbService } from '../../services/db.service';
 export class PollResultsComponent implements OnInit {
 
 	poll_id;
-	results;
+	results: any = {};
 
   constructor(
   	private _activatedRoute: ActivatedRoute,
@@ -28,8 +28,8 @@ export class PollResultsComponent implements OnInit {
   get_poll_results() {
   	const payload = {"poll_id": this.poll_id};
   	this.db_service.get_poll_results(payload).subscribe(res => {
-  		if(res.success) {
-  			console.log(res.data);
+  		if(res.success && res.count) {
+  			// console.log(res.data);
   			this.results = res.data;
   		}
   	});

@@ -1,3 +1,25 @@
-<p>
-  poll-results works!
-</p>
+<div *ngIf="(results | json) == {}">
+	No attempts
+</div>
+<div *ngIf="(results | json) != {}">
+	<h2>{{results.question}}</h2>
+	<table>
+		<thead>
+			<th>Option</th>
+			<th>Count</th>
+			<th>Answer By</th>
+		</thead>
+		<tbody>
+			<tr *ngFor="let row of results.answer_count_map">
+				<td>{{row.option}}</td>
+				<td>{{row.count}}</td>
+				<td>
+					{{row.attempted_by.length}} persons<br>
+					<span *ngFor="let user of row.attempted_by; let i=index">
+						<ng-container *ngIf="i!=0">, </ng-container>{{user}}
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

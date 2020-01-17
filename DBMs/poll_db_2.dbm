@@ -62,16 +62,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar" length="40"/>
 		<comment><![CDATA[hash instead of poll id]]></comment>
 	</column>
-	<column name="owner">
-		<type name="bigint" length="0"/>
-		<comment><![CDATA[foreign key]]></comment>
-	</column>
 	<constraint name="poll_data_pk" type="pk-constr" table="public.poll_data">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="id_user" index="12"/>
+		<object name="id_user" index="11"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
@@ -134,18 +130,23 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="bigint" length="0"/>
 	</column>
 	<column name="answered_by">
-		<type name="varchar" length="100"/>
+		<type name="bigint" length="100"/>
 		<comment><![CDATA[answerer unique identifier]]></comment>
 	</column>
 	<column name="answer">
 		<type name="varchar" length="100"/>
 	</column>
-	<column name="poll_id">
-		<type name="bigint" length="0"/>
-	</column>
 	<constraint name="poll_answers_pk" type="pk-constr" table="public.poll_answers">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_poll_data" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="poll_data_fk" index="1"/>
+	</customidxs>
 </table>
 
 <relationship name="poll_data_has_many_poll_answers" type="rel1n"

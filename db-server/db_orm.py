@@ -17,6 +17,7 @@ engine = create_engine(
                                                     db_data['host'], 
                                                     db_data['dbname']), echo=False)
 meta = MetaData(bind=engine, schema=db_data['schema'], reflect=True)
+meta.reflect(views=True)
 Base = automap_base(metadata=meta)
 
 class PollData(Base):
@@ -38,6 +39,12 @@ class PollAnswers(Base):
 
     id = Column(Integer, primary_key=True)
 
+class PollResultsView(Base):
+    __tablename__ = 'poll_results_view'
+    __table_args__ = {'extend_existing': 'True'}
+
+    id = Column(Integer, primary_key=True)
+
 Base.prepare()
 
 Session = sessionmaker(bind=engine)
@@ -45,8 +52,6 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 ####################################
-
-from sqlalchemy.ext.declarative import DeclarativeMeta
 
 def orm_list(orm_list):
     new_list = []

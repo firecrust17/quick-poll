@@ -158,16 +158,30 @@ class AnswerPoll(restful.Resource):
 		return {'success': True, 'message': 'Answer Saved', 'data': orm_list(orm_rec)}
 
 
-#TODO
 class GetPollResults(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		# User
-		# PollAnswers
-		orm_rec = session.query(PollData).filter(PollData.id == data['poll_id']).all()
+		orm_rec = orm_list(session.query(PollResultsView).filter(PollResultsView.id_poll_data == data['poll_id']).all())
+
+		ret_data = {}
+
+		if len(orm_rec):
+			ret_data = {
+				'question': orm_rec[0]['question'],
+				'answer_count_map': orm_rec[0]['options'],
+				'question_type': orm_rec[0]['question_type'],
+
+			}
+			for opt in ret_data['answer_count_map']:
+				opt['count'] = 0
+				opt['attempted_by'] = []
+				for rec in orm_rec:
+					if rec['answer'] == opt['option']:
+						opt['count'] += 1;
+						opt['attempted_by'].append(rec['user_name'])
 		
-		return {'success': True, 'data': orm_list(orm_rec)}
+		return {'success': True, 'data': ret_data, 'count': len(orm_rec)}
 
 
 

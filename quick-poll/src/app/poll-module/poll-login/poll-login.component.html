@@ -1,3 +1,4 @@
+New: {{is_new}} <button (click)="is_new = !is_new">Toggle</button>
 <div *ngIf="!is_new">
 	login
 	<form [formGroup]="login_payload" (ngSubmit)="validate('login')" class="">
@@ -23,7 +24,7 @@
 
 <div *ngIf="is_new">
 	create
-	<form [formGroup]="login_payload" (ngSubmit)="validate('login')" class="">
+	<form [formGroup]="signup_payload" (ngSubmit)="validate('signup')" class="">
 		<div class="card mb-2 p-2">
 			<div class="row mt-2">
 				
