@@ -1,56 +1,69 @@
-New: {{is_new}} <button (click)="is_new = !is_new">Toggle</button>
-<div *ngIf="!is_new">
-	login
-	<form [formGroup]="login_payload" (ngSubmit)="validate('login')" class="">
-		<div class="card mb-2 p-2">
-			<div class="row mt-2">
-				
-				<div class="col-12 mb-2">
-					<label>Email</label>
-					<input type="email" formControlName="email">
-				</div>
-				
-				<div class="col-12 mb-2">
-					<label>Password</label>
-					<input type="password" formControlName="password">
-				</div>
+<div class="">
+	
+	<div class="col-sm-12 col-md-6 col-md-offset-3 container">
+		<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">Register</a>
+		  </li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+		  <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+		  	<form [formGroup]="login_payload" (ngSubmit)="validate('login')" class="">
+				<div class="mb-2 p-2">
+					<div class="row mt-2">
+						
+						<div class="col-12 mb-2">
+							<label>Email</label>
+							<input class="form-control" type="email" formControlName="email">
+						</div>
+						
+						<div class="col-12 mb-2">
+							<label>Password</label>
+							<input class="form-control" type="password" formControlName="password">
+						</div>
 
-			</div>
-			<button>Login</button>
+					</div>
+					<button class="btn btn-primary btn-lg col-12 mt-3">Login</button>
+				</div>
+			</form>
+		  </div>
+
+		  <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+		  	<form [formGroup]="signup_payload" (ngSubmit)="validate('signup')" class="">
+				<div class="mb-2 p-2">
+					<div class="row mt-2">
+						
+						<div class="col-12 mb-2">
+							<label>Name</label>
+							<input class="form-control" type="text" formControlName="user_name">
+						</div>
+						
+						<div class="col-12 mb-2">
+							<label>Email</label>
+							<input class="form-control" type="email" formControlName="email">
+						</div>
+						
+						<div class="col-12 mb-2">
+							<label>Password</label>
+							<input class="form-control" type="password" formControlName="password">
+						</div>
+
+						<div class="col-12 mb-2">
+							<label>Confirm Password</label>
+							<input class="form-control" type="password" formControlName="confirm_password">
+						</div>
+
+					</div>
+					<button class="btn btn-primary btn-lg col-12 mt-3">Register</button>
+				</div>
+			</form>
+		  </div>
 		</div>
-	</form>
 
+	</div>	
 </div>
 
-<div *ngIf="is_new">
-	create
-	<form [formGroup]="signup_payload" (ngSubmit)="validate('signup')" class="">
-		<div class="card mb-2 p-2">
-			<div class="row mt-2">
-				
-				<div class="col-12 mb-2">
-					<label>Name</label>
-					<input type="text" formControlName="user_name">
-				</div>
-				
-				<div class="col-12 mb-2">
-					<label>Email</label>
-					<input type="email" formControlName="email">
-				</div>
-				
-				<div class="col-12 mb-2">
-					<label>Password</label>
-					<input type="password" formControlName="password">
-				</div>
 
-				<div class="col-12 mb-2">
-					<label>Confirm Password</label>
-					<input type="password" formControlName="confirm_password">
-				</div>
-
-			</div>
-			<button>Sign up</button>
-		</div>
-	</form>
-
-</div>
