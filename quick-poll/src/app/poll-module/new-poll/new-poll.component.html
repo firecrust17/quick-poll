@@ -1,69 +1,71 @@
-<form #poll_form [formGroup]="poll_data_payload" (ngSubmit)="validate()" class="">
-	<div class="card mb-2 p-2">
-		<div class="row mt-2">
-			
-			<div class="col-12 mb-2">
-				<label>Question</label>
-				<input class="form-control" type="text" formControlName="question">
-			</div>
-			
-			<div class="col-12 mb-2">
-				<label>Question Type</label>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" formControlName="question_type" value="single" (click)="add_option('one')">
-					<label class="form-check-label">Single</label>
+<div class="col-sm-12 col-md-6 col-md-offset-3 container">
+	<form #poll_form [formGroup]="poll_data_payload" (ngSubmit)="validate()" class="">
+		<div class="mb-2 p-2">
+			<div class="row mt-2">
+				
+				<div class="col-12 mb-2">
+					<label>Poll</label>
+					<input class="form-control" type="text" formControlName="question" placeholder="Which place to go for the next trip?">
 				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" formControlName="question_type" value="multiple" (click)="add_option('one')">
-					<label class="form-check-label">Multiple</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" formControlName="question_type" value="input" (click)="clear_options()">
-					<label class="form-check-label">Input</label>
-				</div>
-			</div>
+				
+				<div class="col-12 mb-2">
+					<label>Poll Type (i)</label><br>
+					<div class="row">
+						<div class="btn-group btn-group-toggle col-12" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" formControlName="question_type" checked (click)="add_option('one');update_qtype('single')"> Single
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" formControlName="question_type" (click)="add_option('one');update_qtype('multiple')"> Multiple
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" formControlName="question_type" (click)="clear_options();update_qtype('input')"> Free-text
+							</label>
+						</div>
+					</div>
 
-			<div *ngIf="poll_data_payload.get('question_type').value != 'input'" class="col-12 mb-2">
-				<label>Options</label>
-				<div formArrayName="options">
-					<div *ngFor="let option of poll_data_payload.get('options')['controls']; let i = index">
-						<form [formGroup]="option">
-							<div class="row mb-1">
-								<div class="col-6">
-	            					<input class="form-control" id="contact_data{{i}}" type="text" formControlName="option" placeholder="Choice {{i+1}}">
+				</div>
+
+				<div *ngIf="poll_data_payload.get('question_type').value != 'input'" class="col-12 mb-2">
+					<label>Options</label>
+					<div formArrayName="options">
+						<div *ngFor="let option of poll_data_payload.get('options')['controls']; let i = index">
+							<form [formGroup]="option">
+								<div class="row mb-2">
+									<div class="col">
+		            					<input class="form-control" id="contact_data{{i}}" type="text" formControlName="option" placeholder="{{choice[i]}}">
+									</div>
+									<div class="col-auto">
+										<button class="btn btn-primary mr-2" [disabled]="formArray.length == 1" (click)="remove_option(i)">Remove</button>
+									</div>
 								</div>
-								<div class="col-6">
-									<button class="btn btn-primary mr-2" (click)="add_option()">Add</button>
-									<button class="btn btn-primary mr-2" *ngIf="formArray.length != 1" (click)="remove_option(i)">Remove</button>
-								</div>
-							</div>
-						</form>
+							</form>
+						</div>
+						<button class="btn btn-primary mr-2" (click)="add_option()">Add</button>
 					</div>
 				</div>
+
+				<div class="col-12 mb-2">
+					<!-- <label>Answer Limit</label>
+					<input type="number" formControlName="answer_limit"> -->
+				</div>
+
+				<div class="col-12 mb-2">
+					<!-- <label>Participants</label>
+					option logic here -->
+				</div>
+
+				<div class="col-12 mb-2">
+					<label>Timer (in minutes)</label>
+					<input class="form-control" type="number" formControlName="timer">
+				</div>
+
 			</div>
 
-			<div class="col-12 mb-2">
-				<!-- <label>Answer Limit</label>
-				<input type="number" formControlName="answer_limit"> -->
-			</div>
-
-			<div class="col-12 mb-2">
-				<!-- <label>Participants</label>
-				option logic here -->
-			</div>
-
-			<div class="col-12 mb-2">
-				<label>Timer (in minutes)</label>
-				<input class="form-control" type="number" formControlName="timer">
-			</div>
+			<button class="btn btn-primary btn-lg col-12 mt-3">Start Poll</button>
 
 		</div>
-
-		<button class="btn btn-primary">Create</button>
-
-	</div>
-
-</form>
-
+	</form>
+</div>
 
 <!-- <button routerLink="/attempt/1">next</button> -->

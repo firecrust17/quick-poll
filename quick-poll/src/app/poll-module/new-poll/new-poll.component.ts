@@ -12,6 +12,7 @@ export class NewPollComponent implements OnInit {
 
 	poll_data_payload: FormGroup;
   poll_user;
+  choice = ["Amsterdam", "London", "Bangkok", "Switzerland", "Peru", "New York", "Mauritius", "Goa", "Singapore", "Running out of places..", "But you arent!", "Carry on :)", "Good luck!", "..."]
 
   constructor(
   	private fbuilder: FormBuilder,
@@ -32,7 +33,7 @@ export class NewPollComponent implements OnInit {
 			"options": this.fbuilder.array([]),
 			"answer_limit": this.fbuilder.control(3),
 			"participant_count": this.fbuilder.control(0),
-			"timer": this.fbuilder.control(300, Validators.required),
+			"timer": this.fbuilder.control(5, Validators.required),
 			"show_result_on": this.fbuilder.control(""),
 			"is_anonymous": this.fbuilder.control(true),
 			"id_user": this.fbuilder.control(2)
@@ -49,6 +50,7 @@ export class NewPollComponent implements OnInit {
 
   new_poll() {
   	const payload = this.poll_data_payload.value;
+    payload['timer'] *= 60;
   	this.db_service.new_poll(payload).subscribe(res => {
   		if(res.success) {
   			// alert("new poll created");
@@ -79,6 +81,10 @@ export class NewPollComponent implements OnInit {
   clear_options() {
     // this.formArray.clear();
     this.poll_data_payload.controls['options'] = this.fbuilder.array([]);
+  }
+
+  update_qtype(type) {
+    this.poll_data_payload.patchValue({"question_type": type});
   }
 
 }
