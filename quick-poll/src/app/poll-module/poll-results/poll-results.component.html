@@ -1,30 +1,32 @@
-<div *ngIf="(results | json) == {}">
-	No attempts
-</div>
-<div *ngIf="(results | json) != {}">
-	<h2>{{results.question}}</h2>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">Option</th>
-				<th scope="col">Count</th>
-				<th scope="col">Answer By</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let row of results.answer_count_map; let i=index">
-				<th scope="row">{{i+1}}</th>
-				<td>{{row.option}}</td>
-				<td>{{row.count}}</td>
-				<td>
-					{{row.attempted_by.length}} persons<br>
-					<span *ngFor="let user of row.attempted_by; let i=index">
-						<ng-container *ngIf="i!=0">, </ng-container>{{user}}
-					</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+<div class="col-sm-12 col-md-6 col-md-offset-3 container">
+	<div *ngIf="(results | json) == {}">
+		No attempts
+	</div>
+	<div *ngIf="(results | json) != {}">
+		<h2>{{results.question}}</h2>
+		<table class="table table-bordered">
+			<thead>
+				<tr class="bg-primary">
+					<th scope="col">#</th>
+					<th scope="col">Option</th>
+					<th scope="col">Count</th>
+					<!-- <th scope="col">Answer By</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let row of results.answer_count_map; let i=index">
+					<th scope="row">{{i+1}}</th>
+					<td>{{row.option}}</td>
+					<td>{{row.count}}</td>
+					<!-- <td>
+						{{row.attempted_by.length}} persons<br>
+						<span *ngFor="let user of row.attempted_by; let i=index">
+							<ng-container *ngIf="i!=0">, </ng-container>{{user}}
+						</span>
+					</td> -->
+				</tr>
+			</tbody>
+		</table>
 
+	</div>
 </div>
