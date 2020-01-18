@@ -13,7 +13,7 @@ const routes: Routes = [
 		component: NewPollComponent
 	},
 	{
-		path: 'history/:user_id',
+		path: 'history',
 		component: PollHistoryComponent
 	},
 	{
