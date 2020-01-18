@@ -1,47 +1,49 @@
-<div *ngIf="total_members">
-	Total Attempts: {{attempt_count}}/{{total_members}}
-</div>
-<div *ngIf="!total_members">
-	Total Attempts: {{attempt_count}}
-</div>
-
-<div>
-	Time Left: {{time_left}} seconds
-</div>
-
-
-<div *ngIf="time_elapsed">
-	<button (click)="show_result()">Results</button>
-</div>
-
-<div *ngIf="!time_elapsed">
-	<div *ngIf="attempted">
-		<div *ngIf="!time_elapsed">
-			Done. Wait.
-		</div>
+<div class="col-sm-12 col-md-6 col-md-offset-3 container">
+	<div *ngIf="total_members">
+		Total Attempts: {{attempt_count}}/{{total_members}}
+	</div>
+	<div *ngIf="!total_members">
+		Total Attempts: {{attempt_count}}
 	</div>
 
-	<div *ngIf="!attempted">
-		<div *ngIf="!time_elapsed">	
+	<div>
+		Time Left: {{time_left}} seconds
+	</div>
+
+	<hr>
+
+	<div *ngIf="!time_elapsed">
+
+		<div *ngIf="!attempted">
 			<h2>{{poll_data.question}}</h2>
 			<ng-container *ngIf="poll_data.question_type != 'input'">
-				<div *ngFor="let op of poll_data.options; let i=index;">
-					<input type="checkbox" id="opt{{i}}" [(ngModel)]="op.value" value="op.value" (change)="clear_if_single($event, i)"> {{op.option}}
+				<div *ngFor="let op of poll_data.options; let i=index;" class="form-check">
+					<input class="form-check-input" type="checkbox" id="opt{{i}}" [(ngModel)]="op.value" value="op.value" (change)="clear_if_single($event, i)">
+					<label class="form-check-label" for="opt{{i}}">
+						{{op.option}}
+					</label>
 				</div>
 			</ng-container>
 			<ng-container *ngIf="poll_data.question_type == 'input'">
-				<input type="text" [(ngModel)]="option_input">
+				<input class="" type="text" [(ngModel)]="option_input">
 			</ng-container>
+
+			<button class="btn btn-lg btn-primary col-12 mt-3" (click)="answer_poll()">Submit</button>
 		</div>
 
-		<button (click)="answer_poll()">Submit</button>
+		<div *ngIf="attempted">
+			<h2>{{poll_data.question}}</h2>
+			Results will be available once the time is complete.
+			<button class="btn btn-primary btn-lg col-12 mt-3" disabled>View Results</button>
+		</div>
+
 	</div>
 
+	<div *ngIf="time_elapsed">
+		<h2>{{poll_data.question}}</h2>
+		<button class="btn btn-primary btn-lg col-12 mt-3" (click)="show_result()">View Results</button>
+	</div>
+
+
+
 </div>
-
-
-
-
-<!-- <button (click)="send()">
-	send
-</button> -->
