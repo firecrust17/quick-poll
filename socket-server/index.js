@@ -2,7 +2,13 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var SocketIOFile = require('socket.io-file');
-var port = 3001;
+var xmlParser = require('xml2json')
+var fs = require('fs');
+
+var xml = fs.readFileSync('../db-server/config.xml', 'utf-8');
+var config = JSON.parse(xmlParser.toJson(xml));
+// console.log(config['config'])
+var port = parseInt(config['config']['node-server']['port']);
 
 
 // NAMESPACE

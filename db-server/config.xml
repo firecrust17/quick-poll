@@ -13,4 +13,8 @@
     	<port>8000</port>
     </db_server>
 
+    <node-server>
+    	<port>3001</port>
+    </node-server>
+
 </config>
