@@ -2,6 +2,7 @@ import flask_restful as restful
 import json
 from flask import Flask, request
 from flask_cors import CORS
+import hashlib
 
 from db_orm import *	# config_json imported here
 
@@ -70,9 +71,14 @@ class LoginUser(restful.Resource):
 
 
 class NewPoll(restful.Resource):
+	def generate_hash(self):
+		date_time = "random_str"+str(datetime.datetime.now())+"wowhash"
+		return (hashlib.md5(date_time.encode('utf-8')).hexdigest())
+
 	def post(self):
 		data = request.get_json()
-		print(data)
+		# print(data)
+		poll_hash = self.generate_hash()
 
 		orm_rec = PollData(
             question = data['question'],
@@ -84,6 +90,7 @@ class NewPoll(restful.Resource):
             show_result_on = data['show_result_on'],
             is_anonymous = data['is_anonymous'],
             created_on = datetime.datetime.now(),
+            poll_hash = poll_hash,
             id_user = data['id_user'])
         # print (orm_rec)
 
@@ -99,7 +106,7 @@ class GetPollData(restful.Resource):
 
 		# .all() returns list && .one() returns dict
 		try:
-			orm_rec = session.query(PollData).filter(PollData.id == data['id']).one()
+			orm_rec = session.query(PollData).filter(PollData.poll_hash == data['id']).one()
 			return {'success': True, 'data': orm_dict(orm_rec)}
 		except Exception as e:
 			return {'success': False, 'message': 'No Record Found'}
@@ -118,9 +125,9 @@ class GetAttemptCount(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		orm_rec = session.query(PollAnswers.answered_by, func.count(PollAnswers.answered_by))\
-						.filter(PollAnswers.id_poll_data == data['id_poll_data'])\
-						.group_by(PollAnswers.answered_by).all()
+		orm_rec = session.query(PollResultsView.answered_by, func.count(PollResultsView.answered_by))\
+						.filter(PollResultsView.poll_hash == data['poll_hash'])\
+						.group_by(PollResultsView.answered_by).all()
 		# print(orm_rec)
 		return {'success': True, 'data': len(orm_rec)}
 
@@ -129,8 +136,8 @@ class HasAttempted(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		orm_rec = session.query(PollAnswers).filter(PollAnswers.id_poll_data == data['poll_id'], 
-													PollAnswers.answered_by == str(data['user_id'])).all()
+		orm_rec = session.query(PollResultsView).filter(PollResultsView.poll_hash == data['poll_hash'], 
+													PollResultsView.answered_by == str(data['user_id'])).all()
 		# print(orm_rec)
 		return {'success': True, 'data': True if len(orm_rec) else False}
 
@@ -138,10 +145,6 @@ class HasAttempted(restful.Resource):
 class AnswerPoll(restful.Resource):
 	def post(self):
 		data = request.get_json()
-
-		data['answer']
-		data['answered_by']
-		data['id_poll_data']
 
 		orm_rec = session.query(PollAnswers).filter(PollAnswers.id_poll_data == data['id_poll_data'], PollAnswers.answered_by == data['answered_by']).all()
 		if len(orm_rec):
@@ -166,7 +169,7 @@ class GetPollResults(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		orm_rec = orm_list(session.query(PollResultsView).filter(PollResultsView.id_poll_data == data['poll_id']).all())
+		orm_rec = orm_list(session.query(PollResultsView).filter(PollResultsView.poll_hash == data['poll_hash']).all())
 
 		ret_data = {}
 

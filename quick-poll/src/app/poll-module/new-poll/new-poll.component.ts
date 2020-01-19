@@ -54,7 +54,7 @@ export class NewPollComponent implements OnInit {
   	this.db_service.new_poll(payload).subscribe(res => {
   		if(res.success) {
   			// alert("new poll created");
-  			this.router.navigate(['./attempt/'+res.data.id]);
+  			this.router.navigate(['./attempt/'+res.data.poll_hash]);
   		}
   	});
   }

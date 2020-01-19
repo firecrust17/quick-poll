@@ -36,7 +36,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     private db_service: DbService,
   ) {
     this._activatedRoute.params.subscribe(params => {
-      this.id = parseInt(params.poll_id);
+      this.id = params.poll_id;
       if(localStorage.getItem('poll_user')){
         this.user_id = parseInt(localStorage.getItem('poll_user'))
       } else {
@@ -87,7 +87,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   }
 
   get_attempt_count() {
-    const payload = {"id_poll_data": this.id};
+    const payload = {"poll_hash": this.id};
     this.db_service.get_attempt_count(payload).subscribe(res => {
       if(res.success) {
         this.attempt_count = res.data;
@@ -96,7 +96,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   }
 
   has_attempted() {
-    const payload = {"poll_id": this.id, "user_id": this.user_id};
+    const payload = {"poll_hash": this.id, "user_id": this.user_id};
     this.db_service.has_attempted(payload).subscribe(res => {
       if(res.success) {
         this.attempted = res.data;

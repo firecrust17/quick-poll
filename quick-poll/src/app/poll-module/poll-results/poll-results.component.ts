@@ -17,7 +17,7 @@ export class PollResultsComponent implements OnInit {
     private db_service: DbService,
   ) {
   	this._activatedRoute.params.subscribe(params => {
-      this.poll_id = parseInt(params.poll_id);
+      this.poll_id = params.poll_id;
     });
   }
 
@@ -26,7 +26,7 @@ export class PollResultsComponent implements OnInit {
   }
 
   get_poll_results() {
-  	const payload = {"poll_id": this.poll_id};
+  	const payload = {"poll_hash": this.poll_id};
   	this.db_service.get_poll_results(payload).subscribe(res => {
   		if(res.success && res.count) {
   			// console.log(res.data);
