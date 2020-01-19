@@ -9,7 +9,7 @@
 				</div>
 				
 				<div class="col-12 mb-2">
-					<label>Poll Type (i)</label><br>
+					<label>Poll Type <fa-icon [icon]="faIcons.info"></fa-icon></label><br>
 					<div class="row">
 						<div class="btn-group btn-group-toggle col-12" data-toggle="buttons">
 							<label class="btn btn-primary active">
@@ -36,12 +36,12 @@
 		            					<input class="form-control" id="contact_data{{i}}" type="text" formControlName="option" placeholder="{{choice[i]}}">
 									</div>
 									<div class="col-auto">
-										<button class="btn btn-primary mr-2" [disabled]="formArray.length == 1" (click)="remove_option(i)">Remove</button>
+										<button class="btn btn-primary mr-2" [disabled]="formArray.length == 1" (click)="remove_option(i)"><fa-icon [icon]="faIcons.delete"></fa-icon></button>
 									</div>
 								</div>
 							</form>
 						</div>
-						<button class="btn btn-primary mr-2" (click)="add_option()">Add</button>
+						<button class="btn btn-primary mr-2" (click)="add_option()"><fa-icon [icon]="faIcons.add"></fa-icon></button>
 					</div>
 				</div>
 
@@ -62,7 +62,7 @@
 
 			</div>
 
-			<button class="btn btn-primary btn-lg col-12 mt-3">Start Poll</button>
+			<button class="btn btn-primary btn-lg col-12 mt-3">Start Poll <fa-icon [icon]="faIcons.start"></fa-icon></button>
 
 		</div>
 	</form>

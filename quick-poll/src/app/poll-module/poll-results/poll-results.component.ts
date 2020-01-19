@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../../services/db.service';
 
+// import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-poll-results',
   templateUrl: './poll-results.component.html',
   styleUrls: ['./poll-results.component.css']
 })
 export class PollResultsComponent implements OnInit {
+
+	// faCoffee = faCoffee;
 
 	poll_id;
 	results: any = {};

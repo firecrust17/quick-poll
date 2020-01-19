@@ -3,12 +3,21 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DbService } from '../../services/db.service';
 import { Router } from '@angular/router'
 
+import { faInfoCircle, faPlayCircle, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-new-poll',
   templateUrl: './new-poll.component.html',
   styleUrls: ['./new-poll.component.css']
 })
 export class NewPollComponent implements OnInit {
+
+  faIcons = {
+    "info": faInfoCircle,
+    "start": faPlayCircle,
+    "delete": faTimes,
+    "add": faPlus,
+  };
 
 	poll_data_payload: FormGroup;
   poll_user;

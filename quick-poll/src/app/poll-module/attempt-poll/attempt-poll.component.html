@@ -7,7 +7,7 @@
 	</div>
 
 	<div>
-		Time Left: {{time_left}} seconds
+		<fa-icon [icon]="faIcons.timer"></fa-icon> {{time_left}} seconds
 	</div>
 
 	<hr>
@@ -28,20 +28,20 @@
 				<input class="" type="text" [(ngModel)]="option_input">
 			</ng-container>
 
-			<button class="btn btn-lg btn-primary col-12 mt-3" (click)="answer_poll()">Submit</button>
+			<button class="btn btn-lg btn-primary col-12 mt-3" (click)="answer_poll()">Submit <fa-icon [icon]="faIcons.submit"></fa-icon></button>
 		</div>
 
 		<div *ngIf="attempted">
 			<h2>{{poll_data.question}}</h2>
 			Results will be available once the time is complete.
-			<button class="btn btn-primary btn-lg col-12 mt-3" disabled>View Results</button>
+			<button class="btn btn-primary btn-lg col-12 mt-3" disabled>View Results <fa-icon [icon]="faIcons.chart"></fa-icon></button>
 		</div>
 
 	</div>
 
 	<div *ngIf="time_elapsed">
 		<h2>{{poll_data.question}}</h2>
-		<button class="btn btn-primary btn-lg col-12 mt-3" (click)="show_result()">View Results</button>
+		<button class="btn btn-primary btn-lg col-12 mt-3" (click)="show_result()">View Results <fa-icon [icon]="faIcons.chart"></fa-icon></button>
 	</div>
 
 

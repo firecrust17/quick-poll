@@ -5,12 +5,19 @@ import {Md5} from "md5-typescript";
 
 import { DbService } from '../../services/db.service';
 
+import { faSignInAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-poll-login',
   templateUrl: './poll-login.component.html',
   styleUrls: ['./poll-login.component.css']
 })
 export class PollLoginComponent implements OnInit {
+
+  faIcons = {
+    "login": faSignInAlt,
+    "signup": faUserPlus
+  };
 
 	is_new = true;
 	poll_id = null;

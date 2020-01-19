@@ -6,12 +6,20 @@ import { DbService } from '../../services/db.service';
 
 import * as $ from 'jquery';
 
+import { faClock, faCheck, faPoll } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-attempt-poll',
   templateUrl: './attempt-poll.component.html',
   styleUrls: ['./attempt-poll.component.css']
 })
 export class AttemptPollComponent implements OnInit, OnDestroy {
+
+  faIcons = {
+    "submit": faCheck,
+    "timer": faClock,
+    "chart": faPoll,
+  };
 
 	// active_users = 0;
   user_id;

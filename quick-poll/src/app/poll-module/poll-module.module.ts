@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // const config: SocketIoConfig = { url: 'http://localhost:3001/test', options: {} };
 
 // import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -25,6 +26,7 @@ import { PollLoginComponent } from './poll-login/poll-login.component';
     FormsModule,
     ReactiveFormsModule,
     PollModuleRoutingModule,
+    FontAwesomeModule,
     // SocketIoModule.forRoot(config)
   ]
 })
