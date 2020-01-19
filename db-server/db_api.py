@@ -137,7 +137,7 @@ class HasAttempted(restful.Resource):
 		data = request.get_json()
 
 		orm_rec = session.query(PollResultsView).filter(PollResultsView.poll_hash == data['poll_hash'], 
-													PollResultsView.answered_by == str(data['user_id'])).all()
+													PollResultsView.answered_by == data['user_id']).all()
 		# print(orm_rec)
 		return {'success': True, 'data': True if len(orm_rec) else False}
 

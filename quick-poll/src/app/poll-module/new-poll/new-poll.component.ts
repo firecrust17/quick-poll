@@ -36,7 +36,7 @@ export class NewPollComponent implements OnInit {
 			"timer": this.fbuilder.control(5, Validators.required),
 			"show_result_on": this.fbuilder.control(""),
 			"is_anonymous": this.fbuilder.control(true),
-			"id_user": this.fbuilder.control(2)
+			"id_user": this.fbuilder.control(this.poll_user)
 		});
     this.add_option();
   }
@@ -49,7 +49,7 @@ export class NewPollComponent implements OnInit {
   }
 
   new_poll() {
-  	const payload = this.poll_data_payload.value;
+  	var payload = this.poll_data_payload.value;
     payload['timer'] *= 60;
   	this.db_service.new_poll(payload).subscribe(res => {
   		if(res.success) {
