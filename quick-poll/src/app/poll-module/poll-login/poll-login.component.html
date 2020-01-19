@@ -1,6 +1,8 @@
 <div class="">
 	
 	<div class="col-sm-12 col-md-6 col-md-offset-3 container">
+		<h5 *ngIf="poll_id">Login/Register to attempt the poll<br><br></h5>
+
 		<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
 		  <li class="nav-item">
 		    <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
@@ -43,12 +45,12 @@
 						
 						<div class="col-12 mb-2">
 							<label>Email</label>
-							<input class="form-control" type="email" formControlName="email">
+							<input class="form-control" type="email" formControlName="email" autocomplete="new-password">
 						</div>
 						
 						<div class="col-12 mb-2">
 							<label>Password</label>
-							<input class="form-control" type="password" formControlName="password">
+							<input class="form-control" type="password" formControlName="password" autocomplete="new-password">
 						</div>
 
 						<div class="col-12 mb-2">

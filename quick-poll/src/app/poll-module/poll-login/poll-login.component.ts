@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Md5} from "md5-typescript";
+
 import { DbService } from '../../services/db.service';
 
 @Component({
@@ -30,13 +32,13 @@ export class PollLoginComponent implements OnInit {
 
   ngOnInit() {
   	this.login_payload = this.fbuilder.group({
-			"email": this.fbuilder.control("", Validators.required),
+			"email": this.fbuilder.control("", [Validators.required/*, Validators.email*/]),
 			"password": this.fbuilder.control("", Validators.required),
 		});
 
   	this.signup_payload = this.fbuilder.group({
 			"user_name": this.fbuilder.control("", Validators.required),
-			"email": this.fbuilder.control("", Validators.required),
+			"email": this.fbuilder.control("", [Validators.required/*, Validators.email*/]),
 			"password": this.fbuilder.control("", Validators.required),
 			"confirm_password": this.fbuilder.control("", Validators.required),
 		});
@@ -44,7 +46,8 @@ export class PollLoginComponent implements OnInit {
   }
 
   login_user() {
-  	const payload = this.login_payload.value;
+  	var payload = this.login_payload.value;
+    payload['password'] = Md5.init(Md5.init(payload['password']));
   	this.db_service.login_user(payload).subscribe(res => {
   		if(res.success){
   			localStorage.setItem('poll_user', res.data.id);
@@ -54,7 +57,8 @@ export class PollLoginComponent implements OnInit {
   }
 
   create_user() {
-  	const payload = this.signup_payload.value;
+  	var payload = this.signup_payload.value;
+    payload['password'] = Md5.init(Md5.init(payload['password']));
   	this.db_service.create_user(payload).subscribe(res => {
   		if(res.success){
   			localStorage.setItem('poll_user', res.data.id);
