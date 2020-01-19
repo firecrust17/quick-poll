@@ -1,15 +1,24 @@
 <div class="col-sm-12 col-md-6 col-md-offset-3 container">
-	<div *ngIf="total_members">
-		Total Attempts: {{attempt_count}}/{{total_members}}
-	</div>
-	<div *ngIf="!total_members">
-		Total Attempts: {{attempt_count}}
-	</div>
+	<div class="row">
+		<div class="col-6">
+			<fa-icon [icon]="faIcons.timer"></fa-icon> {{time_left}} seconds
+		</div>
 
-	<div>
-		<fa-icon [icon]="faIcons.timer"></fa-icon> {{time_left}} seconds
-	</div>
+		<div class="col-6">
+			<button class="btn btn-primary float-right" (click)="copy_link()">Copy Poll Link <fa-icon [icon]="faIcons.copy"></fa-icon></button>
+		</div>
 
+		<input class="secret_input" type="text" [(ngModel)]="poll_link" id="poll_link">
+
+		<div class="col-12" *ngIf="total_members">
+			Total Attempts: {{attempt_count}}/{{total_members}}
+		</div>
+		<div class="col-12" *ngIf="!total_members">
+			Total Attempts: {{attempt_count}}
+		</div>
+
+
+	</div>
 	<hr>
 
 	<div *ngIf="!time_elapsed">

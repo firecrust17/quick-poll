@@ -6,7 +6,7 @@
   </button>
 
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
     <ul class="navbar-nav mr-auto">
     </ul>
     <div class="form-inline my-2 my-lg-0">
@@ -18,7 +18,7 @@
 	    		<a class="nav-link" routerLink="./history">My Polls</a>
 	    	</li>
 	    	<li class="nav-item active">
-	    		<a class="nav-link" routerLink="./history">Logout <fa-icon [icon]="faIcons.logout"></fa-icon></a>
+	    		<a class="nav-link" (click)="logout()">Logout <fa-icon [icon]="faIcons.logout"></fa-icon></a>
 	    	</li>
 	    </ul>
     </div>

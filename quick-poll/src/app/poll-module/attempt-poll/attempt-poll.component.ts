@@ -3,10 +3,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SocketService } from '../../services/socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
+import { EnvService } from '../../services/env.service';
 
 import * as $ from 'jquery';
 
-import { faClock, faCheck, faPoll } from '@fortawesome/free-solid-svg-icons';
+import { faStopwatch, faCheck, faPoll, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-attempt-poll',
@@ -17,8 +18,9 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 
   faIcons = {
     "submit": faCheck,
-    "timer": faClock,
+    "timer": faStopwatch,
     "chart": faPoll,
+    "copy": faCopy,
   };
 
 	// active_users = 0;
@@ -29,6 +31,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
 	time_left = 0; 	//	seconds
 	time_elapsed = false;
 	interval;
+  poll_link = '';
 
   option_array = [];
   option_input = "";
@@ -42,9 +45,11 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     private db_service: DbService,
+    private env: EnvService,
   ) {
     this._activatedRoute.params.subscribe(params => {
       this.id = params.poll_id;
+      this.poll_link = this.env.domain+"/attempt/"+params.poll_id;
       if(localStorage.getItem('poll_user')){
         this.user_id = parseInt(localStorage.getItem('poll_user'))
       } else {
@@ -239,6 +244,22 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   show_result() {
   	this.router.navigate(['./results/'+this.id]);
     // this.router.navigate(['./login']);
+  }
+
+  copy_link() {
+
+    var copyText = $("#poll_link");
+    copyText.select();
+    // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+    document.execCommand("copy");
+    
+    // var $temp = $("#poll_link");
+    // $("body").append($temp);
+    // $temp.val($(element).html()).select();
+    // document.execCommand("copy");
+    // $temp.remove();
+    
+    // alert("Copied the text: " + copyText.value);
   }
 
   ngOnDestroy() {

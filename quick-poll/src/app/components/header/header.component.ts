@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { faSignOutAlt, faChartPie, faUser } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -14,9 +15,16 @@ export class HeaderComponent implements OnInit {
 		"user": faUser,
 	};
 
-  constructor() { }
+  constructor(
+  	private router: Router
+  ) { }
 
   ngOnInit() {
+  }
+
+  logout() {
+  	localStorage.removeItem("poll_user");
+  	this.router.navigate(['./login']);
   }
 
 }
