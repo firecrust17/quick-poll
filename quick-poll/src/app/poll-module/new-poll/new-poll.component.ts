@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DbService } from '../../services/db.service';
 import { Router } from '@angular/router'
 
+import * as $ from 'jquery';
+
 import { faInfoCircle, faPlayCircle, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -48,6 +50,9 @@ export class NewPollComponent implements OnInit {
 			"id_user": this.fbuilder.control(this.poll_user)
 		});
     this.add_option();
+    setTimeout(() => {
+      $('#question').focus();
+    },300);
   }
   get formArray() { return <FormArray>this.poll_data_payload.get('options'); }
 
@@ -81,6 +86,9 @@ export class NewPollComponent implements OnInit {
         'option': this.fbuilder.control('', Validators.required),
       })
     );
+    setTimeout(() => {
+      $('#option_'+(control.length-1)).focus();
+    }, 200);
   }
 
   remove_option(index) {

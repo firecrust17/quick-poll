@@ -5,7 +5,7 @@
 				
 				<div class="col-12 mb-2">
 					<label>Poll</label>
-					<input class="form-control" type="text" formControlName="question" placeholder="Which place to go for the next trip?">
+					<input class="form-control" id="question" type="text" formControlName="question" placeholder="Which place to go for the next trip?">
 				</div>
 				
 				<div class="col-12 mb-2">
@@ -33,7 +33,7 @@
 							<form [formGroup]="option">
 								<div class="row mb-2">
 									<div class="col">
-		            					<input class="form-control" id="contact_data{{i}}" type="text" formControlName="option" placeholder="{{choice[i]}}">
+		            					<input class="form-control" id="option_{{i}}" type="text" formControlName="option" placeholder="{{choice[i]}}">
 									</div>
 									<div class="col-auto">
 										<button class="btn btn-primary mr-2" [disabled]="formArray.length == 1" (click)="remove_option(i)"><fa-icon [icon]="faIcons.delete"></fa-icon></button>

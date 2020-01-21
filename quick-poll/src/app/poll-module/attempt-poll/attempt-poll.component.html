@@ -34,7 +34,7 @@
 				</div>
 			</ng-container>
 			<ng-container *ngIf="poll_data.question_type == 'input'">
-				<input class="" type="text" [(ngModel)]="option_input">
+				<input class="form-control" type="text" [(ngModel)]="option_input" placeholder="Enter your answer here..">
 			</ng-container>
 
 			<button class="btn btn-lg btn-primary col-12 mt-3" (click)="answer_poll()">Submit <fa-icon [icon]="faIcons.submit"></fa-icon></button>
