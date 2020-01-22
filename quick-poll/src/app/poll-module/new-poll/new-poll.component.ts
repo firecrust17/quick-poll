@@ -59,7 +59,9 @@ export class NewPollComponent implements OnInit {
   validate() {
   	if(this.poll_data_payload.status == 'VALID' && this.formArray.status == 'VALID'){
   		this.new_poll();
-  	}
+  	} else {
+      alert("Please enter all mandatory fields.");
+    }
   }
 
   new_poll() {

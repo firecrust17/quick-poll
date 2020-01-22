@@ -212,7 +212,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   answer_poll() {
     const payload = this.prepare_payload();
     if(!payload.answer.length) {
-      alert("Please Select an answer to Submit");
+      alert("Please select an answer to submit");
       return false;
     }
     this.db_service.answer_poll(payload).subscribe(res => {

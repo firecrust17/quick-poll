@@ -4,7 +4,7 @@
 			<div class="row">
 				
 				<div class="col-12 mb-2">
-					<label>Poll</label>
+					<label>Poll <span class="red">*</span></label>
 					<input class="form-control" id="question" type="text" formControlName="question" placeholder="Which place to go for the next trip?">
 				</div>
 				
@@ -27,7 +27,7 @@
 				</div>
 
 				<div *ngIf="poll_data_payload.get('question_type').value != 'input'" class="col-12 mb-2">
-					<label>Options</label>
+					<label>Options <span class="red">*</span></label>
 					<div formArrayName="options">
 						<div *ngFor="let option of poll_data_payload.get('options')['controls']; let i = index">
 							<form [formGroup]="option">

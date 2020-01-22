@@ -82,17 +82,30 @@ export class PollLoginComponent implements OnInit {
   	}
   }
 
+  check_valid_email(email) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+  }
+
   validate(type) {
   	if(type == 'login'){
   		if(this.login_payload.status == 'VALID'){
-  			this.login_user();
+  			if(this.check_valid_email(this.login_payload.get('email').value)) {
+          this.login_user();
+        } else {
+          alert("Invalid Email.");
+        }
   		} else {
   			alert("All fields are mandatory");
   		}
   	} else if (type == 'signup') {
   		if(this.signup_payload.status == 'VALID'){
   			if(this.signup_payload.get('password').value == this.signup_payload.get('confirm_password').value){
-  				this.create_user();
+  				if(this.check_valid_email(this.signup_payload.get('email').value)) {
+            this.create_user();
+          } else {
+            alert('Invalid Email');
+          }
   			} else {
   				alert("Passwords did not match");
   			}
