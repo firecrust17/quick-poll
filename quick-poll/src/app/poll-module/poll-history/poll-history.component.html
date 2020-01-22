@@ -1,4 +1,62 @@
-<p>
-  poll-history works!
-  show created poll and attempted polls, both
-</p>
+<div class="col-sm-12 col-md-6 col-md-offset-3 container">
+	<h2>My Polls</h2><hr>
+
+	<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+	  <li class="nav-item">
+	    <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Created Polls</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">Other Attempted Polls</a>
+	  </li>
+	</ul>
+	<br>
+	<div class="tab-content" id="myTabContent">
+	  <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+	  	<table class="table table-bordered table-responsive">
+			<thead>
+				<tr class="bg-primary text-white">
+					<th scope="col">#</th>
+					<th scope="col">Poll</th>
+					<th scope="col">Created On</th>
+					<th scope="col">Attempts</th>
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let row of created_polls; let i=index">
+					<th scope="row">{{i+1}}</th>
+					<td>{{row.question}}</td>
+					<td>{{row.created_on | slice:0:16}}</td>
+					<td>{{row.count}}</td>
+					<td>copy/results link</td>
+				</tr>
+			</tbody>
+		</table>
+	  </div>
+
+	  <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+	  	<table class="table table-bordered table-responsive">
+			<thead>
+				<tr class="bg-primary text-white">
+					<th scope="col">#</th>
+					<th scope="col">Poll</th>
+					<th scope="col">Created On</th>
+					<th scope="col">Attempts</th>
+					<th scope="col">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let row of other_polls; let i=index">
+					<th scope="row">{{i+1}}</th>
+					<td>{{row.question}}</td>
+					<td>{{row.created_on | slice:0:16}}</td>
+					<td>{{row.count}}</td>
+					<td>results link</td>
+				</tr>
+			</tbody>
+		</table>
+	  </div>
+	</div>
+
+
+</div>

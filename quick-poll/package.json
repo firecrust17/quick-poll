@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~7.2.0",
+    "@angular/animations": "^7.2.16",
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
     "@angular/core": "~7.2.0",
@@ -28,6 +28,7 @@
     "jquery": "^3.4.1",
     "md5-typescript": "^1.0.5",
     "ngx-socket-io": "^3.0.1",
+    "ngx-toastr": "^10.0.1",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.5.4",
     "socket.io-client": "^2.3.0",

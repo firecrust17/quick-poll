@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Md5} from "md5-typescript";
+import { ToastrService } from 'ngx-toastr';
 
 import { DbService } from '../../services/db.service';
 
@@ -29,6 +30,7 @@ export class PollLoginComponent implements OnInit {
   	private _activatedRoute: ActivatedRoute,
   	private router: Router,
     private db_service: DbService,
+    private toastr: ToastrService,
   ) {
   	this._activatedRoute.params.subscribe(params => {
       if(params.poll_id != undefined){
@@ -93,10 +95,10 @@ export class PollLoginComponent implements OnInit {
   			if(this.check_valid_email(this.login_payload.get('email').value)) {
           this.login_user();
         } else {
-          alert("Invalid Email.");
+          this.toastr.error('', 'Invalid Email');
         }
   		} else {
-  			alert("All fields are mandatory");
+  			this.toastr.error('', 'All fields are mandatory');
   		}
   	} else if (type == 'signup') {
   		if(this.signup_payload.status == 'VALID'){
@@ -104,13 +106,13 @@ export class PollLoginComponent implements OnInit {
   				if(this.check_valid_email(this.signup_payload.get('email').value)) {
             this.create_user();
           } else {
-            alert('Invalid Email');
+            this.toastr.error('', 'Invalid Email');
           }
   			} else {
-  				alert("Passwords did not match");
+          this.toastr.error('', 'Passwords did not match');
   			}
   		} else {
-  			alert("All fields are mandatory");
+        this.toastr.error('', 'All fields are mandatory');
   		}
   	}
   }

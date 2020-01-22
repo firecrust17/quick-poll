@@ -116,9 +116,10 @@ class GetUserPolls(restful.Resource):
 	def post(self):
 		data = request.get_json()
 
-		orm_rec = session.query(PollData).filter(PollData.owner == data['owner']).all()
+		orm_rec = session.query(PollData).filter(PollData.id_user == data['owner']).all()
+		orm_rec2 = session.query(PollData).filter(PollData.id_user == data['owner']).all()
 		
-		return {'success': True, 'data': orm_list(orm_rec), 'count': len(orm_rec)}
+		return {'success': True, 'data': {'created_polls': orm_list(orm_rec), 'other_polls': orm_list(orm_rec2)}, 'count': len(orm_rec)}
 
 
 class GetAttemptCount(restful.Resource):
