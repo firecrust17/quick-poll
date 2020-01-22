@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import hashlib
 
-from db_orm import *	# config_json imported here
+from db_orm import *	# config_json imported here + sqlalchemy functions
 
 ##########################################################################################
 
@@ -113,13 +113,25 @@ class GetPollData(restful.Resource):
 
 
 class GetUserPolls(restful.Resource):
+	def group_polls(self, data):
+		# return list with poll_id, question, created_on, attempts, poll_hash
+		
+		return data
+
 	def post(self):
 		data = request.get_json()
+		created_polls = []
+		other_polls = []
 
-		orm_rec = session.query(PollData).filter(PollData.id_user == data['owner']).all()
-		orm_rec2 = session.query(PollData).filter(PollData.id_user == data['owner']).all()
+		created_polls = orm_list(session.query(PollResultsView).filter(PollResultsView.id_user == data['owner']).all())
+		other_poll_ids = (session.query(PollResultsView.id_user).filter(PollResultsView.answered_by == data['owner']).all())
+		other_poll_ids = [x[0] for x in other_poll_ids]
+		other_polls = orm_list(session.query(PollResultsView).filter(PollResultsView.id_user.in_(other_poll_ids)).all())
+
+		created_polls = self.group_polls(created_polls)
+		other_polls = self.group_polls(other_polls)
 		
-		return {'success': True, 'data': {'created_polls': orm_list(orm_rec), 'other_polls': orm_list(orm_rec2)}, 'count': len(orm_rec)}
+		return {'success': True, 'data': {'created_polls': created_polls, 'other_polls': other_polls}}
 
 
 class GetAttemptCount(restful.Resource):
