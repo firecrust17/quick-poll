@@ -1,0 +1,7 @@
+.secret_input {
+    height: 0px;
+    width: 0px;
+    opacity: 0;
+}
+
+th, td { white-space: nowrap;}

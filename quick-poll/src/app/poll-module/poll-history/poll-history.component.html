@@ -26,9 +26,18 @@
 				<tr *ngFor="let row of created_polls; let i=index">
 					<th scope="row">{{i+1}}</th>
 					<td>{{row.question}}</td>
-					<td>{{row.created_on | slice:0:16}}</td>
-					<td>{{row.count}}</td>
-					<td>copy/results link</td>
+					<td>{{row.created_on | date:'dd MMM yyyy HH:mm'}}</td>
+					<td>{{row.attempts}}</td>
+					<td>
+						<input class="secret_input" type="text" value="{{env.domain}}/attempt/{{row.poll_hash}}" id="poll_link_{{i}}">
+						<button title="Copy Link" class="btn btn-primary mr-2" (click)="copy_link(i)">
+							<fa-icon [icon]="faIcons.copy"></fa-icon>
+						</button>
+						<!-- <button class="btn btn-primary mr-2" routerLink="/attempt/{{row.poll_hash}}">Attempt</button> -->
+						<button title="View Results" class="btn btn-primary mr-2" routerLink="/results/{{row.poll_hash}}">
+							<fa-icon [icon]="faIcons.chart"></fa-icon>
+						</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -49,9 +58,13 @@
 				<tr *ngFor="let row of other_polls; let i=index">
 					<th scope="row">{{i+1}}</th>
 					<td>{{row.question}}</td>
-					<td>{{row.created_on | slice:0:16}}</td>
-					<td>{{row.count}}</td>
-					<td>results link</td>
+					<td>{{row.created_on | date:'dd MMM yyyy HH:mm'}}</td>
+					<td>{{row.attempts}}</td>
+					<td>
+						<button title="View Results" class="btn btn-primary mr-2" routerLink="/results/{{row.poll_hash}}">
+							<fa-icon [icon]="faIcons.chart"></fa-icon>
+						</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>

@@ -115,8 +115,24 @@ class GetPollData(restful.Resource):
 class GetUserPolls(restful.Resource):
 	def group_polls(self, data):
 		# return list with poll_id, question, created_on, attempts, poll_hash
-		
-		return data
+		# return data
+		ret_data = []
+		temp_map = {}
+		i=0
+		for rec in data:
+			if rec['id_poll_data'] in temp_map.keys():
+				ret_data[temp_map[rec['id_poll_data']]]['attempts'] += 1
+			else:
+				ret_data.append({
+					"id_poll_data": rec['id_poll_data'],
+					"question": rec['question'],
+					"created_on": rec['created_on'],
+					"poll_hash": rec['poll_hash'],
+					"attempts": 1,
+				})
+				temp_map[rec['id_poll_data']] = i
+				i += 1
+		return ret_data
 
 	def post(self):
 		data = request.get_json()
@@ -124,7 +140,7 @@ class GetUserPolls(restful.Resource):
 		other_polls = []
 
 		created_polls = orm_list(session.query(PollResultsView).filter(PollResultsView.id_user == data['owner']).all())
-		other_poll_ids = (session.query(PollResultsView.id_user).filter(PollResultsView.answered_by == data['owner']).all())
+		other_poll_ids = (session.query(PollResultsView.id_user).filter(and_(PollResultsView.answered_by == data['owner'], PollResultsView.id_user != data['owner'])).all())
 		other_poll_ids = [x[0] for x in other_poll_ids]
 		other_polls = orm_list(session.query(PollResultsView).filter(PollResultsView.id_user.in_(other_poll_ids)).all())
 

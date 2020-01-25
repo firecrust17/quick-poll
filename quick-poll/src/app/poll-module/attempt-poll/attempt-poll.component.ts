@@ -4,6 +4,7 @@ import { SocketService } from '../../services/socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
 import { EnvService } from '../../services/env.service';
+import { ToastrService } from 'ngx-toastr';
 
 import * as $ from 'jquery';
 
@@ -46,6 +47,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     private router: Router,
     private db_service: DbService,
     private env: EnvService,
+    private toastr: ToastrService,
   ) {
     this._activatedRoute.params.subscribe(params => {
       this.id = params.poll_id;
@@ -212,7 +214,7 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
   answer_poll() {
     const payload = this.prepare_payload();
     if(!payload.answer.length) {
-      alert("Please select an answer to submit");
+      this.toastr.error('', 'Please select an answer to submit');
       return false;
     }
     this.db_service.answer_poll(payload).subscribe(res => {
@@ -260,6 +262,8 @@ export class AttemptPollComponent implements OnInit, OnDestroy {
     // $temp.remove();
     
     // alert("Copied the text: " + copyText.value);
+    this.toastr.success('', 'Link Copied');
+
   }
 
   ngOnDestroy() {

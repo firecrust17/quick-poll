@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from '../../services/db.service';
+import { EnvService } from '../../services/env.service';
+import { ToastrService } from 'ngx-toastr';
+
+import { faPoll, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-poll-history',
@@ -8,12 +12,19 @@ import { DbService } from '../../services/db.service';
 })
 export class PollHistoryComponent implements OnInit {
 
+	faIcons = {
+    "chart": faPoll,
+    "copy": faCopy,
+  };
+
 	user_id;
 	created_polls = [];
 	other_polls = [];
 
   constructor(
   	private db_service: DbService,
+  	private toastr: ToastrService,
+  	private env: EnvService,
   ) { }
 
   ngOnInit() {
@@ -29,6 +40,14 @@ export class PollHistoryComponent implements OnInit {
   			this.other_polls = res.data.other_polls;
   		}
   	});
+  }
+
+  copy_link(index) {
+  	var copyText = $("#poll_link_"+index);
+    copyText.select();
+    // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+    document.execCommand("copy");
+    this.toastr.success('', 'Link Copied');
   }
 
 }
