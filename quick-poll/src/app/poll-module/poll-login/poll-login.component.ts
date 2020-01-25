@@ -59,8 +59,7 @@ export class PollLoginComponent implements OnInit {
     payload['password'] = Md5.init(Md5.init(payload['password']));
   	this.db_service.login_user(payload).subscribe(res => {
   		if(res.success){
-  			localStorage.setItem('poll_user', res.data.id);
-  			this.redirect_user();
+  			this.redirect_user(res);
   		}
   	});
   }
@@ -70,13 +69,14 @@ export class PollLoginComponent implements OnInit {
     payload['password'] = Md5.init(Md5.init(payload['password']));
   	this.db_service.create_user(payload).subscribe(res => {
   		if(res.success){
-  			localStorage.setItem('poll_user', res.data.id);
-  			this.redirect_user();
+  			this.redirect_user(res);
   		}
   	});
   }
 
-  redirect_user() {
+  redirect_user(res) {
+    localStorage.setItem('poll_user', res.data.id);
+    localStorage.setItem('poll_user_name', res.data.user_name);
   	if(this.poll_id){
   		this.router.navigate(['./attempt/'+this.poll_id]);
   	} else {

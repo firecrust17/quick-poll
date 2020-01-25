@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationStart, Event } from '@angular/router';
 import { faSignOutAlt, faChartPie, faUser } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -14,16 +14,29 @@ export class HeaderComponent implements OnInit {
 		"logo": faChartPie,
 		"user": faUser,
 	};
+	poll_user_name = null;
 
   constructor(
   	private router: Router
-  ) { }
+  ) {
+		this.router.events.subscribe( (event: Event) => {
+			if (event instanceof NavigationStart) {
+				if(localStorage.getItem('poll_user_name') != null) {
+					this.poll_user_name = localStorage.getItem('poll_user_name');
+				} else {
+					this.poll_user_name = null;
+				}
+			}
+		});
+
+	}
 
   ngOnInit() {
   }
 
   logout() {
   	localStorage.removeItem("poll_user");
+  	localStorage.removeItem("poll_user_name");
   	this.router.navigate(['./login']);
   }
 
