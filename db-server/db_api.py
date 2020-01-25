@@ -209,13 +209,30 @@ class GetPollResults(restful.Resource):
 				'question_type': orm_rec[0]['question_type'],
 
 			}
-			for opt in ret_data['answer_count_map']:
-				opt['count'] = 0
-				opt['attempted_by'] = []
+			if orm_rec[0]['question_type'] != 'input':
+				for opt in ret_data['answer_count_map']:
+					opt['count'] = 0
+					opt['attempted_by'] = []
+					for rec in orm_rec:
+						if rec['answer'] == opt['option']:
+							opt['count'] += 1;
+							opt['attempted_by'].append(rec['user_name'])
+			else :
+				temp_map = {}
+				i=0
 				for rec in orm_rec:
-					if rec['answer'] == opt['option']:
-						opt['count'] += 1;
-						opt['attempted_by'].append(rec['user_name'])
+					if rec['answer'] in temp_map.keys():
+						ret_data['answer_count_map'][temp_map[rec['answer']]]['count'] += 1
+						ret_data['answer_count_map'][temp_map[rec['answer']]]['attempted_by'].append(rec['user_name'])
+					else:
+						ret_data['answer_count_map'].append({
+							'option': rec['answer'],
+							'count': 1,
+							'attempted_by': [rec['user_name']]
+						})
+						temp_map[rec['answer']] = i
+						i += 1
+
 		
 		return {'success': True, 'data': ret_data, 'count': len(orm_rec)}
 
