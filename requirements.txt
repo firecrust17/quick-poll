@@ -1,6 +1,6 @@
 aniso8601==8.0.0
 cheroot==8.2.1
-CherryPy==18.5.0
+CherryPy==17.4.2
 Click==7.0
 Flask==1.1.1
 Flask-Cors==3.0.8
