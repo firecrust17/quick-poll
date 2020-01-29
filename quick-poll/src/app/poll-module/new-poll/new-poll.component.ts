@@ -91,10 +91,12 @@ export class NewPollComponent implements OnInit {
     setTimeout(() => {
       $('#option_'+(control.length-1)).focus();
     }, 200);
+    return false;
   }
 
   remove_option(index) {
     this.formArray.removeAt(index);
+    return false;
   }
 
   clear_options() {
