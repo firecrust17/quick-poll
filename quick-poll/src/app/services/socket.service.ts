@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
 
-	public namespace = 'test';
-	public url = 'http://localhost:3001/'+this.namespace;
 	public io: any;
 
-  constructor() {}
+  constructor(private env: EnvService) {}
 
   initiate_connection(params) {
-  	this.io = io(this.url, {autoConnect: false, query: params});
+  	this.io = io(this.env.io_url, {autoConnect: false, query: params});
   	this.io.connect();
   }
 
