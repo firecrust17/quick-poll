@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { EnvService } from './env.service';
+// import { EnvService } from './env.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { tap, catchError } from "rxjs/operators";
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class InterceptorService implements HttpInterceptor {
 
   constructor(
-  	private env: EnvService,
+  	// private env: EnvService,
   	private toastr: ToastrService,
   	private router: Router,
   ) { }
