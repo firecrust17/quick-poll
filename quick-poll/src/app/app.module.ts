@@ -10,6 +10,12 @@ import { HeaderComponent } from './components/header/header.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+// Interceptor
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './services/interceptor.service';
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+];
 
 @NgModule({
   declarations: [
@@ -24,7 +30,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

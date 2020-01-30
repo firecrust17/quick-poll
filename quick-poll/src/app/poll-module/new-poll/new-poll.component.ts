@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { DbService } from '../../services/db.service';
 import { Router } from '@angular/router'
+import { ToastrService } from 'ngx-toastr';
 
 import * as $ from 'jquery';
 
@@ -29,6 +30,7 @@ export class NewPollComponent implements OnInit {
   	private fbuilder: FormBuilder,
   	private db_service: DbService,
   	private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +62,7 @@ export class NewPollComponent implements OnInit {
   	if(this.poll_data_payload.status == 'VALID' && this.formArray.status == 'VALID'){
   		this.new_poll();
   	} else {
-      alert("Please enter all mandatory fields.");
+      this.toastr.error('', 'Please enter all mandatory fields');
     }
   }
 
