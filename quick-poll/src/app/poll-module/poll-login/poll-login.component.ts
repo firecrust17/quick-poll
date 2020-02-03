@@ -56,6 +56,7 @@ export class PollLoginComponent implements OnInit {
 
   login_user() {
   	var payload = this.login_payload.value;
+    payload['email'] = payload['email'].toLowerCase();
     payload['password'] = Md5.init(Md5.init(payload['password']));
   	this.db_service.login_user(payload).subscribe(res => {
   		if(res.success){
@@ -66,6 +67,7 @@ export class PollLoginComponent implements OnInit {
 
   create_user() {
   	var payload = this.signup_payload.value;
+    payload['email'] = payload['email'].toLowerCase();
     payload['password'] = Md5.init(Md5.init(payload['password']));
   	this.db_service.create_user(payload).subscribe(res => {
   		if(res.success){
