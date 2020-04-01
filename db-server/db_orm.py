@@ -45,6 +45,20 @@ class PollResultsView(Base):
 
     id = Column(Integer, primary_key=True)
 
+
+
+
+
+# NOT USED IN QUICKPOLL - USED FOR PORTFOLIO CONTACT
+class PortfolioContacts(Base):
+    __tablename__ = 'portfolio_contacts'
+    __table_args__ = {'extend_existing': 'True'}
+
+    id = Column(Integer, primary_key=True)
+
+
+
+
 Base.prepare()
 
 Session = sessionmaker(bind=engine)

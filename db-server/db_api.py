@@ -240,6 +240,12 @@ class GetPollResults(restful.Resource):
 
 
 
+
+
+
+
+
+
 ##########################################################################################
 # APIs
 app = Flask(__name__)
@@ -259,3 +265,32 @@ api.add_resource(GetAttemptCount, '/get_attempt_count')
 api.add_resource(HasAttempted, '/has_attempted')
 api.add_resource(AnswerPoll, '/answer_poll')
 api.add_resource(GetPollResults, '/get_poll_results')
+
+
+
+
+
+
+
+##########################################################################################
+################### NOT USED IN QUICKPOLL - USED FOR PORTFOLIO CONTACT ###################
+##########################################################################################
+class SavePortfolioMessage(restful.Resource):
+	def post(self):
+		data = request.get_json()
+
+		orm_rec = PortfolioContacts(
+            name = data['name'],
+            email = data['email'],
+            subject = data['subject'],
+            message = data['message'],
+            timestamp = datetime.datetime.now())
+		try:
+			session.add(orm_rec)
+			session.commit()
+			return {'success': True, 'message': 'Message Sent Successfully'}
+		except Exception as e:
+			return {'success': False, 'message': 'Some Error Occured', 'error_code': 2}	
+		
+
+api.add_resource(SavePortfolioMessage, '/save_portfolio_message')
