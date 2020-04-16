@@ -11,6 +11,25 @@ if __name__ == "__main__":
         'server.socket_host': host,
         'server.socket_port': port
     }
+    
+    server_type = config_json['config']['server_type']
+    certificate_path = config_json['config']['certificates']
+
+    if server_type == 'prod':
+        cherrypy_config = {
+            'server.socket_host': host,
+            'server.socket_port': port,
+            'server.ssl_module': "builtin",
+            'server.ssl_private_key': certificate_path['private_key'],
+            'server.ssl_certificate': certificate_path['certificate'],
+            'server.ssl_certificate_chain': certificate_path['certificate_chain'],
+        }
+    else:
+        cherrypy_config = {
+            'server.socket_host': host,
+            'server.socket_port': port,
+        }
+
 
     cherrypy.config.update(cherrypy_config)
     

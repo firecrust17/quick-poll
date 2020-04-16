@@ -60,10 +60,23 @@ export class NewPollComponent implements OnInit {
 
   validate() {
   	if(this.poll_data_payload.status == 'VALID' && this.formArray.status == 'VALID'){
-  		this.new_poll();
+  		if(this.check_valid_options()){
+        this.new_poll();
+      }
   	} else {
       this.toastr.error('', 'Please enter all mandatory fields');
     }
+  }
+
+  check_valid_options() {
+    const options = this.poll_data_payload.get('options').value;
+    for(var i=0; i<options.length; i++) {
+      if(options[i]['option'].trim() == '') {
+        this.toastr.error('', 'Options cannot be left blank');
+        return false;
+      }
+    }
+    return true;
   }
 
   new_poll() {
