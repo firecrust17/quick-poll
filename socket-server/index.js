@@ -1,12 +1,22 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-var SocketIOFile = require('socket.io-file');
-var xmlParser = require('xml2json')
 var fs = require('fs');
+var crypto = require('crypto');
 
+var xmlParser = require('xml2json')
 var xml = fs.readFileSync('../db-server/config.xml', 'utf-8');
 var config = JSON.parse(xmlParser.toJson(xml));
+
+var private_key = fs.readFileSync(config['config']['certificates']['private_key']).toString();
+var certificate = fs.readFileSync(config['config']['certificates']['certificate']).toString();
+
+var credentials = crypto.createCredentials({key: private_key, cert: certificate});
+
+var app = require('express')();
+var http = require('http').createServer(app);
+
+http.setSecure(credentials);
+
+var io = require('socket.io')(http);
+var SocketIOFile = require('socket.io-file');
 // console.log(config['config'])
 var port = parseInt(config['config']['node-server']['port']);
 

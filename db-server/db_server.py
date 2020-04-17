@@ -19,10 +19,10 @@ if __name__ == "__main__":
         cherrypy_config = {
             'server.socket_host': host,
             'server.socket_port': port,
-            'server.ssl_module': "builtin",
+            'server.ssl_module': 'builtin',
             'server.ssl_private_key': certificate_path['private_key'],
             'server.ssl_certificate': certificate_path['certificate'],
-            'server.ssl_certificate_chain': certificate_path['certificate_chain'],
+            # 'server.ssl_certificate_chain': certificate_path['certificate_chain'],
         }
     else:
         cherrypy_config = {
