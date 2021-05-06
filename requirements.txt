@@ -3,7 +3,7 @@ cheroot==8.2.1
 CherryPy==18.5.0
 Click==7.0
 Flask==1.1.1
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 Flask-RESTful==0.3.7
 get==2019.4.13
 importlib-resources==1.0.2
