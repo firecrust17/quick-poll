@@ -4,7 +4,7 @@
   "description": "Generic Socket Framework",
   "dependencies": {
     "express": "^4.15.2",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "socket.io-file": "^2.0.31",
     "xml2json": "^0.12.0"
   }
